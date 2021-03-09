@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Block</title>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <!-- Dropzone -->
+    <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+    <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+</head>
+<body>
+    <ul class = 'nav'>
+        <li class= 'nav-item'>DeepfakeBlock</li>
+        <li class= 'nav-item'>Documentation</li>
+    </ul>
+    <form action="upload/" method="post" class="dropzone" enctype="multipart/form-data">
+    {% csrf_token %}
+        <div class="fallback">
+            <input name="input_images" type="file" multiple />
+        </div>
+    </form>
+</body>
+</html>

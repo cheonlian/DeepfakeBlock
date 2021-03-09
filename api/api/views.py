@@ -57,8 +57,3 @@ def post(request):
     output.save("media/adv.png")
     response = FileResponse(open("media/adv.png", "rb"))
     return response
-
-    if serializer.is_valid(raise_exception=True):
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
