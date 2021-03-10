@@ -20,24 +20,24 @@ def index(request, id):
     return Response(serializer.data)
 
 
-from tog.dataset_utils.preprocessing import letterbox_image_padded
-from keras import backend as K
-from tog.models.yolov3 import YOLOv3_Darknet53_Face
-from tog.tog.attacks import *
-import tensorflow as tf
+# from tog.dataset_utils.preprocessing import letterbox_image_padded
+# from keras import backend as K
+# from tog.models.yolov3 import YOLOv3_Darknet53_Face
+# from tog.tog.attacks import *
+# import tensorflow as tf
 
-K.clear_session()
-global graph
-graph = tf.get_default_graph()
-
-
-tf_config = tf.ConfigProto()
-tf_config.gpu_options.allow_growth = True
-session = tf.Session(config = tf_config)
+# K.clear_session()
+# global graph
+# graph = tf.get_default_graph()
 
 
-weights = 'tog/model_weights/yolo_face.h5'
-detector = YOLOv3_Darknet53_Face(weights=weights)
+# tf_config = tf.ConfigProto()
+# tf_config.gpu_options.allow_growth = True
+# session = tf.Session(config = tf_config)
+
+
+# weights = 'tog/model_weights/yolo_face.h5'
+# detector = YOLOv3_Darknet53_Face(weights=weights)
 
 def predict(input):
     eps = 8 / 255.       
@@ -57,6 +57,19 @@ def post(request):
     input_img = pilImage.open(input_image)
 
     output = predict(input_img)
+    output.save("media/adv.png")
+    response = FileResponse(open("media/adv.png", "rb"))
+    return response
+
+@api_view(['POST'])
+def crop(request):
+    x1, y1, x2, y2 = int(request.data["x1"]), int(request.data["y1"]), int(request.data["x2"]), int(request.data["y2"])
+    # x, y = x2 - x1, y2 - y1
+    img = pilImage.open(request.data["input_image"])
+    area = (x1, y1, x2, y2)
+    cropped_img = img.crop(area)
+    img.paste(cropped_img, area)
+    output = predict(img)
     output.save("media/adv.png")
     response = FileResponse(open("media/adv.png", "rb"))
     return response
