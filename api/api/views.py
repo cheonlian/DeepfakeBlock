@@ -20,24 +20,24 @@ def index(request, id):
     return Response(serializer.data)
 
 
-# from tog.dataset_utils.preprocessing import letterbox_image_padded
-# from keras import backend as K
-# from tog.models.yolov3 import YOLOv3_Darknet53_Face
-# from tog.tog.attacks import *
-# import tensorflow as tf
+from tog.dataset_utils.preprocessing import letterbox_image_padded
+from keras import backend as K
+from tog.models.yolov3 import YOLOv3_Darknet53_Face
+from tog.tog.attacks import *
+import tensorflow as tf
 
-# K.clear_session()
-# global graph
-# graph = tf.get_default_graph()
-
-
-# tf_config = tf.ConfigProto()
-# tf_config.gpu_options.allow_growth = True
-# session = tf.Session(config = tf_config)
+K.clear_session()
+global graph
+graph = tf.get_default_graph()
 
 
-# weights = 'tog/model_weights/yolo_face.h5'
-# detector = YOLOv3_Darknet53_Face(weights=weights)
+tf_config = tf.ConfigProto()
+tf_config.gpu_options.allow_growth = True
+session = tf.Session(config = tf_config)
+
+
+weights = 'tog/model_weights/yolo_face.h5'
+detector = YOLOv3_Darknet53_Face(weights=weights)
 
 def predict(input):
     eps = 8 / 255.       
