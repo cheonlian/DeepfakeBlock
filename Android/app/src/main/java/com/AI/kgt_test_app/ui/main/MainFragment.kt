@@ -1,4 +1,4 @@
-package com.KGT_AI.cheonlian.ui.main
+package com.AI.kgt_test_app.ui.main
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -20,7 +20,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import com.KGT_AI.cheonlian.R
+import com.AI.kgt_test_app.R
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -49,9 +49,11 @@ class MainFragment : Fragment() {
         lateinit var file_path:File
 
         var currentPhotoPath: String? = null
-    }
 
-    private lateinit var viewModel: MainViewModel
+        private lateinit var viewModel: MainViewModel
+
+        val fileName = "VISION_" + SimpleDateFormat("yyMMdd_HHmm").format(Date())
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -80,12 +82,20 @@ class MainFragment : Fragment() {
         }
 
         trans.setOnClickListener {
-            if (currentPhotoPath == null){
-                Toast.makeText(this.activity!!.applicationContext, "Path Error", Toast.LENGTH_SHORT).show()
-            }else {
-                val d:BitmapDrawable = imageView.drawable as BitmapDrawable
-                viewModel.saveBitmap(d.bitmap)
-                Toast.makeText(this.activity!!.applicationContext, "Saved", Toast.LENGTH_SHORT).show()
+            if (imageView.drawable == null){
+                Log.e(TAG, imageView.toString())
+                Toast.makeText(this.activity!!.applicationContext, "No Image", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            else {
+                Log.d(TAG + "_TRANS", "Photo path: $currentPhotoPath")
+                if (viewModel.saveBitmap(viewModel.sendImage(currentPhotoPath!!)) == null){
+                    Toast.makeText(this.activity!!.applicationContext, "Save Fail...", Toast.LENGTH_SHORT)
+                        .show()
+                }else {
+                    Toast.makeText(this.activity!!.applicationContext, "Saved", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
     }
@@ -95,33 +105,33 @@ class MainFragment : Fragment() {
             val bitmap = getImage()
             imageView.setImageBitmap(bitmap)
         }else if (requestCode == REQUEST_GALLERY_TAKE && resultCode == RESULT_OK){
+            currentPhotoPath = data?.data!!.path
             imageView.setImageURI(data?.data) // handle chosen image
         }
     }
 
     // 권한요청 결과
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG + "PERMMISION", "Permission: " + permissions[0] + "was " + grantResults[0])
+            Log.d(TAG + "_PERMMISION", "Permission: " + permissions[0] + "was " + grantResults[0])
         }else{
-            Log.d(TAG + "PERMMISION","Denies")
+            Log.d(TAG + "_PERMMISION","Denies")
         }
     }
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyMMdd_HHmm").format(Date())
         val storageDir: File = this.context!!.getExternalFilesDir(Environment.DIRECTORY_DCIM)!!
-        Log.d(TAG + "CREATETEMP", storageDir.absolutePath.toString())
+        Log.d(TAG + "_CREATETEMP", "Storage Path: ${storageDir.absolutePath.toString()}")
         return File.createTempFile(
-            "VISION_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
+            fileName, /* prefix */
+            ".png", /* suffix */
             storageDir /* directory */
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
@@ -129,6 +139,7 @@ class MainFragment : Fragment() {
         }
     }
 
+    // 카메라 열기
     private fun dispatchTakePictureIntent() {
         file_path = createImageFile()
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
@@ -142,10 +153,10 @@ class MainFragment : Fragment() {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         this.context!!,
-                        "com.KGT_AI.cheonlian.fileprovider",
+                        "com.AI.kgt_test.fileprovider",
                         file_path
                     )
-                    Log.d(TAG + "PHOTOURI", photoURI.toString())
+                    Log.d(TAG + "_DISPATCH", "Photo uri: ${photoURI.toString()}")
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                 }
@@ -153,12 +164,13 @@ class MainFragment : Fragment() {
         }
     }
 
-    //갤러리 열기
+    // 갤러리 열기
     private fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, REQUEST_GALLERY_TAKE)
     }
+
 
     private fun getImage(): Bitmap {
         val options:BitmapFactory.Options = BitmapFactory.Options()
