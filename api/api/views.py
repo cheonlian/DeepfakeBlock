@@ -20,7 +20,6 @@ def index(request, id):
     return Response(serializer.data)
 
 
-
 from tog.dataset_utils.preprocessing import letterbox_image_padded
 from keras import backend as K
 from tog.models.yolov3 import YOLOv3_Darknet53_Face
@@ -31,8 +30,12 @@ K.clear_session()
 global graph
 graph = tf.get_default_graph()
 
+
 tf_config = tf.ConfigProto()
 tf_config.gpu_options.allow_growth = True
+session = tf.Session(config = tf_config)
+
+
 weights = 'tog/model_weights/yolo_face.h5'
 detector = YOLOv3_Darknet53_Face(weights=weights)
 
@@ -57,8 +60,3 @@ def post(request):
     output.save("media/adv.png")
     response = FileResponse(open("media/adv.png", "rb"))
     return response
-
-    if serializer.is_valid(raise_exception=True):
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
