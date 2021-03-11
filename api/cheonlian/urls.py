@@ -25,7 +25,8 @@ urlpatterns = [
     path("<int:id>/", views.index),
     path("post/", views.post),
     path("", web_views.MainView.as_view(), name="web-main"),
-    path("upload/", web_views.upload_view)
+    path("upload/", web_views.upload_view),
     # url path create
+    path("crop/", views.crop),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
