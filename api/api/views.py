@@ -86,7 +86,7 @@ def crop(request):
     # x, y = x2 - x1, y2 - y1
     img = pilImage.open(request.data["input_image"])
     area = (x1, y1, x2, y2)
-    cropped_img = img.crop((0, 0, 500, 500))
+    cropped_img = img.crop(area)
     img.paste(cropped_img, area)
     # img.show()
     output = attack(img)
