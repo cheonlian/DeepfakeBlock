@@ -39,13 +39,32 @@ session = tf.Session(config = tf_config)
 weights = 'tog/model_weights/yolo_face.h5'
 detector = YOLOv3_Darknet53_Face(weights=weights)
 
-def predict(input):
+#모든 사이즈 공격 가능
+def attack(input):
+    w,h = input.size
+    newsize = (w+416, h+416)
+    new_image = pilImage.new('RGB', newsize, (0, 0, 0))
+    for x in range(0,w,416):
+        for y in range(0,h,416):
+            area = (x,y,x+416,y+416)
+            cropped_img = input.crop(area)
+            rgb = pilImage.new('RGB',(416,416),(0,0,0))
+            rgb.paste(cropped_img,(0,0))
+            cropped_noise = attack416(rgb)
+            new_image.paste(cropped_noise, (x,y))
+    area = (0,0,w, h)
+    output = new_image.crop(area)
+    print(w,h)
+    return output
+
+#416*416인 이미지만 공격가능
+def attack416(input):
     eps = 8 / 255.       
     eps_iter = 2 / 255.  
-    n_iter = 10        
-    x_query, x_meta = letterbox_image_padded(input, size=detector.model_img_size)
+    n_iter = 10   
+    npimg = np.asarray(input)[np.newaxis, :, :, :] / 255.
     with graph.as_default():
-        x_adv_untargeted = tog_untargeted(victim=detector, x_query=x_query, n_iter=n_iter, eps=eps, eps_iter=eps_iter)
+        x_adv_untargeted = tog_untargeted(victim=detector, x_query=npimg, n_iter=n_iter, eps=eps, eps_iter=eps_iter)
     img = x_adv_untargeted[0]*255
     output = pilImage.fromarray(img.astype('uint8'), 'RGB')
     return output
@@ -56,7 +75,7 @@ def post(request):
     serializer = ImageSerializer(data=request.data)
     input_img = pilImage.open(input_image)
 
-    output = predict(input_img)
+    output = attack(input_img)
     output.save("media/adv.png")
     response = FileResponse(open("media/adv.png", "rb"))
     return response
