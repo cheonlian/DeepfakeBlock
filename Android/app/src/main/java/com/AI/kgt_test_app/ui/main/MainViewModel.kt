@@ -8,11 +8,13 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.AI.kgt_test_app.R
 import com.AI.kgt_test_app.api.Reqapi
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,6 +45,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
 
 
     fun saveBitmap(bitmap: Bitmap?) : Uri? {
+        Log.d(TAG + "_SAVE", "Save Image Start")
         if (bitmap == null){
             Log.e(TAG + "_SAVE", "No Image")
             return null
@@ -87,101 +90,72 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
             values.put(MediaStore.Images.Media.IS_PENDING, 0)
             resolver.update(uri, values, null, null)
 
+            Log.d(TAG + "_SAVE", "Save Image End")
+            MainFragment().Toast_Message()
             return uri
         } catch (e: Exception) {
             Log.e(TAG + "_SAVE", "error : $e")
+            Log.d(TAG + "_SAVE", "Save Image End")
             return null
         }
     }
 
 
-    fun sendImage(Image: Bitmap, store_path:File): Bitmap? {
-        val Image_File = File.createTempFile(fileName, ".png", store_path)
-        val out: OutputStream = FileOutputStream(Image_File)
-        Image.compress(Bitmap.CompressFormat.PNG, 100, out)
-
-        Log.d(TAG + "_SEND", "File path: ${Image_File.path}")
-        val bitmap = File(Image_File.absolutePath)
-
-        var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/png"), bitmap)
-        var body = MultipartBody.Part.createFormData("input_image", fileName, requestBody)
-
-        val gson = GsonBuilder()
-                .setLenient()
-                .create()
-
-        val client:OkHttpClient = OkHttpClient.Builder()
-                .connectTimeout(2, TimeUnit.MINUTES)
-                .readTimeout(2, TimeUnit.MINUTES)
-                .writeTimeout(30, TimeUnit.SECONDS)
-                .build()
-
-        val retrofit = Retrofit.Builder()
-                .baseUrl(SERVER_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build()
-
-        val server = retrofit.create(Reqapi::class.java)
+    fun sendImage(Image: Bitmap, store_path:File): Boolean {
+        Log.d(TAG + "_SEND", "Send Image Start")
+        val scope = CoroutineScope(Dispatchers.IO)
         var output: Bitmap? = null
-        server.getImage(body).enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                Log.d(TAG + "_SEND", "Success Connect")
-                if (response?.isSuccessful) {
-                    Log.d(TAG + "_SEND", "Success: ${response.body()}")
-                    var responseBody = response.body()!!.byteStream()
-                    output = BitmapFactory.decodeStream(responseBody)
-                } else {
-                    Log.e(TAG + "_SEND", "Fail 2: ${response.body()}")
-                }
-            }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e(TAG + "_SEND", "Fail 1: ${t.message}")
-            }
-        })
-        return output
-        /*
-        try {
+        scope.launch {
             val Image_File = File.createTempFile(fileName, ".png", store_path)
             val out: OutputStream = FileOutputStream(Image_File)
             Image.compress(Bitmap.CompressFormat.PNG, 100, out)
 
-            Log.d(TAG, "File path: ${Image_File.path}")
+            Log.d(TAG + "_SEND", "File path: ${Image_File.path}")
+            val bitmap = File(Image_File.absolutePath)
 
-            val body: RequestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("input_image", fileName+".png",
-                            RequestBody.create(MediaType.parse("image/*"), Image_File))
+            var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/png"), bitmap)
+            var body = MultipartBody.Part.createFormData("input_image", fileName, requestBody)
+
+            val gson = GsonBuilder()
+                    .setLenient()
+                    .create()
+
+            val client:OkHttpClient = OkHttpClient.Builder()
+                    .connectTimeout(2, TimeUnit.MINUTES)
+                    .readTimeout(2, TimeUnit.MINUTES)
+                    .writeTimeout(30, TimeUnit.SECONDS)
                     .build()
-            val request: Request = Request.Builder()
-                    .url("http://211.198.5.202:1111/post/")
-                    .post(body)
+
+            val retrofit = Retrofit.Builder()
+                    .baseUrl(SERVER_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build()
 
-            val client = OkHttpClient()
-            var output: Bitmap? = null
-            client.newCall(request).enqueue(object: Callback{
-                override fun onFailure(call: Call, e: IOException) {
-                    Log.e(TAG + "_SEND", "Fail 1: ${e.message}")
-                }
+            val server = retrofit.create(Reqapi::class.java)
 
-                override fun onResponse(call: Call, response: okhttp3.Response) {
+            server.getImage(body).enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     Log.d(TAG + "_SEND", "Success Connect")
                     if (response?.isSuccessful) {
                         Log.d(TAG + "_SEND", "Success: ${response.body()}")
                         var responseBody = response.body()!!.byteStream()
                         output = BitmapFactory.decodeStream(responseBody)
+                        Log.d(TAG + "_SEND", "Send Image End")
+                        saveBitmap(output)
                     } else {
                         Log.e(TAG + "_SEND", "Fail 2: ${response.body()}")
                     }
                 }
-            })
 
-            return output
-        }catch (e: java.lang.Exception){
-            Log.e(TAG + "_SEND", "Create Temp File Fail")
-            return null
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e(TAG + "_SEND", "Fail 1: ${t.message}")
+                }
+            })
         }
-        */*/
+
+        Log.d(TAG + "_SEND", "Send Image End")
+        return true
     }
 }

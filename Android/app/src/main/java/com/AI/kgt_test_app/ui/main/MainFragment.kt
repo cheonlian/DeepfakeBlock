@@ -23,6 +23,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
 import com.AI.kgt_test_app.R
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -76,6 +77,8 @@ class MainFragment : Fragment() {
         trans = view!!.findViewById(R.id.trans)
         packageManager = this.context!!.packageManager
 
+        store_path = this.context!!.getExternalFilesDir(Environment.DIRECTORY_DCIM)!!
+
 
         camera.setOnClickListener {
             dispatchTakePictureIntent()
@@ -94,12 +97,13 @@ class MainFragment : Fragment() {
             else {
                 val d = imageView.drawable.toBitmap()
                 Log.d(TAG + "_TRANS", "Photo path: ${currentPhotoPath}")
-                if (viewModel.saveBitmap(viewModel.sendImage(d, store_path)) == null){
-                    Toast.makeText(this.activity!!.applicationContext, "Save Fail...", Toast.LENGTH_SHORT)
-                        .show()
+
+                if (viewModel.sendImage(d, store_path)){
+                    Toast.makeText(this.activity!!.applicationContext, "Saving... Wait Next Message", Toast.LENGTH_SHORT)
+                            .show()
                 }else {
-                    Toast.makeText(this.activity!!.applicationContext, "Saved", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this.activity!!.applicationContext, "Save Fail...", Toast.LENGTH_SHORT)
+                            .show()
                 }
             }
         }
@@ -133,8 +137,7 @@ class MainFragment : Fragment() {
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name
-        val storageDir: File = this.context!!.getExternalFilesDir(Environment.DIRECTORY_DCIM)!!
-        store_path = storageDir
+        val storageDir: File = store_path
         Log.d(TAG + "_CREATETEMP", "Storage Path: ${storageDir.absolutePath}")
         return File.createTempFile(
             fileName, /* prefix */
@@ -194,5 +197,9 @@ class MainFragment : Fragment() {
         val im_Options = BitmapFactory.Options()
 
         return BitmapFactory.decodeFile(file_path.absolutePath, im_Options)
+    }
+
+    fun Toast_Message(){
+        Toast.makeText(this.activity!!.applicationContext, "Save Success!!", Toast.LENGTH_SHORT).show()
     }
 }
