@@ -19,12 +19,15 @@ class MainView(TemplateView):
 @csrf_exempt
 def upload_view(request):
     if request.method == "POST":
-        print(request.POST.get("x", ""))
-        input_image = request.FILES.get("input_image")
+        x1, y1, x2, y2 = request.POST["x1"], request.POST["y1"], request.POST["x2"], request.POST["y2"]
+        print(x1,y1,x2,y2)
+        input_image = request.FILES["input_image"]
         if input_image is not None:
             # output = predict(pilImage.open(input_image))
             output = pilImage.open(input_image)
             output.save("media/test.png")
+
+            
             response = FileResponse(
                 open("media/test.png", "rb"), content_type="image/png"
             )

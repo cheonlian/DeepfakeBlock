@@ -37,8 +37,9 @@ tf_config.gpu_options.allow_growth = True
 session = tf.Session(config=tf_config)
 
 
-weights = "tog/model_weights/yolo_face.h5"
-detector = YOLOv3_Darknet53_Face(weights=weights)
+# weights = "tog/model_weights/yolo_face.h5"
+# detector = YOLOv3_Darknet53_Face(weights=weights)
+
 
 #모든 사이즈 공격 가능
 def attack(input):
@@ -82,6 +83,11 @@ def post(request):
     response = FileResponse(open("media/adv.png", "rb"))
     return response
 
+# def crop(x,y,w,h,input):
+
+
+#     return output
+
 @api_view(['POST'])
 def crop(request):
     x1, y1, x2, y2 = int(request.data["x1"]), int(request.data["y1"]), int(request.data["x2"]), int(request.data["y2"])
@@ -89,9 +95,8 @@ def crop(request):
     img = pilImage.open(request.data["input_image"])
     area = (x1, y1, x2, y2)
     cropped_img = img.crop(area)
-    img.paste(cropped_img, area)
-    # img.show()
-    output = attack(img)
-    output.save("media/adv.png")
+    output = attack(cropped_img)
+    img.paste(output, area)
+    img.save("media/adv.png")
     response = FileResponse(open("media/adv.png", "rb"))
     return response
