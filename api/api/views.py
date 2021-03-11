@@ -67,8 +67,9 @@ def crop(request):
     # x, y = x2 - x1, y2 - y1
     img = pilImage.open(request.data["input_image"])
     area = (x1, y1, x2, y2)
-    cropped_img = img.crop(area)
+    cropped_img = img.crop((0, 0, 500, 500))
     img.paste(cropped_img, area)
+    # img.show()
     output = predict(img)
     output.save("media/adv.png")
     response = FileResponse(open("media/adv.png", "rb"))
