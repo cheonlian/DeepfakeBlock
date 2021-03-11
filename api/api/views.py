@@ -13,7 +13,8 @@ from rest_framework import status
 
 from PIL import Image as pilImage
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def index(request, id):
     image = Image.objects.get(id=id)
     serializer = ImageSerializer(image)
@@ -33,10 +34,10 @@ graph = tf.get_default_graph()
 
 tf_config = tf.ConfigProto()
 tf_config.gpu_options.allow_growth = True
-session = tf.Session(config = tf_config)
+session = tf.Session(config=tf_config)
 
 
-weights = 'tog/model_weights/yolo_face.h5'
+weights = "tog/model_weights/yolo_face.h5"
 detector = YOLOv3_Darknet53_Face(weights=weights)
 
 #모든 사이즈 공격 가능
@@ -69,9 +70,10 @@ def attack416(input):
     output = pilImage.fromarray(img.astype('uint8'), 'RGB')
     return output
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def post(request):
-    input_image = request.data['input_image']
+    input_image = request.data["input_image"]
     serializer = ImageSerializer(data=request.data)
     input_img = pilImage.open(input_image)
 
