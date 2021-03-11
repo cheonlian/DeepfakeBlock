@@ -20,11 +20,7 @@
         <li class= 'nav-item'>DeepfakeBlock</li>
         <li class= 'nav-item'>Documentation</li>
     </ul>
-    <form action="upload/" method="post" class="dropzone" enctype="multipart/form-data">
-    {% csrf_token %}
-        <div class="fallback">
-            <input name="input_images" type="file" multiple />
-        </div>
-    </form>
+    {% block content %}
+    {% endblock content %}
 </body>
 </html>

@@ -13,7 +13,8 @@ from rest_framework import status
 
 from PIL import Image as pilImage
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def index(request, id):
     image = Image.objects.get(id=id)
     serializer = ImageSerializer(image)
@@ -33,26 +34,30 @@ graph = tf.get_default_graph()
 
 tf_config = tf.ConfigProto()
 tf_config.gpu_options.allow_growth = True
-session = tf.Session(config = tf_config)
+session = tf.Session(config=tf_config)
 
 
-weights = 'tog/model_weights/yolo_face.h5'
+weights = "tog/model_weights/yolo_face.h5"
 detector = YOLOv3_Darknet53_Face(weights=weights)
 
+
 def predict(input):
-    eps = 8 / 255.       
-    eps_iter = 2 / 255.  
-    n_iter = 10        
+    eps = 8 / 255.0
+    eps_iter = 2 / 255.0
+    n_iter = 10
     x_query, x_meta = letterbox_image_padded(input, size=detector.model_img_size)
     with graph.as_default():
-        x_adv_untargeted = tog_untargeted(victim=detector, x_query=x_query, n_iter=n_iter, eps=eps, eps_iter=eps_iter)
-    img = x_adv_untargeted[0]*255
-    output = pilImage.fromarray(img.astype('uint8'), 'RGB')
+        x_adv_untargeted = tog_untargeted(
+            victim=detector, x_query=x_query, n_iter=n_iter, eps=eps, eps_iter=eps_iter
+        )
+    img = x_adv_untargeted[0] * 255
+    output = pilImage.fromarray(img.astype("uint8"), "RGB")
     return output
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def post(request):
-    input_image = request.data['input_image']
+    input_image = request.data["input_image"]
     serializer = ImageSerializer(data=request.data)
     input_img = pilImage.open(input_image)
 

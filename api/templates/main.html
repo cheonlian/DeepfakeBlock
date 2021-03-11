@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<form action="upload/" method="post" class="dropzone" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="fallback">
+        <input name="input_images" type="file" multiple />
+    </div>
+</form>
+
+{% endblock content %}
