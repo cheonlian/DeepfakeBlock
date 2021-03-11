@@ -18,13 +18,15 @@ from django.urls import path, include
 from api import views
 from django.conf.urls.static import static
 from django.conf import settings
-
+from Web import views as web_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('<int:id>/', views.index),
-    path('post/', views.post),
+    path("admin/", admin.site.urls),
+    path("<int:id>/", views.index),
+    path("post/", views.post),
+    path("", web_views.MainView.as_view(), name="web-main"),
+    path("upload/", web_views.upload_view),
     # url path create
-] 
-urlpatterns += \
-    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("crop/", views.crop),
+]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

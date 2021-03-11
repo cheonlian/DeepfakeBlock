@@ -2,7 +2,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,venv,django,visualstudiocode,python,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,venv,django,visualstudiocode,python,linux
 
+# vscode
+api/.vscode/
+
 ### Django ###
+
 *.log
 *.pot
 *.pyc
