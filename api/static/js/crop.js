@@ -57,21 +57,22 @@ $(function () {
             canvas = image.cropper('getData');
             console.log(canvas);
             var form = new FormData();
-            console.log(img.files[0]["name"]);
+            // console.log(img.files[0]["name"]);
             form.append("input_image", img.files[0], img.files[0]["name"]);
-            form.append("x1", canvas.x);
-            form.append("y1", canvas.y);
-            form.append("x2", canvas.width);
-            form.append("y2", canvas.height);
+            form.append("x", canvas.x);
+            form.append("y", canvas.y);
+            form.append("w", canvas.width);
+            form.append("h", canvas.height);
 
-            $.ajax('upload/', {
+            // crop/ 으로 요청 보내도록 했습니다.
+            // 현재 문제는 다운로드가 완료되기 전에 이미지를 호출하는 것입니다..
+            // upload/ 로 요청 보내서 이미지 다운로드 완료 후 호출하는 방법이 있을 것 같습니다.
+            $.ajax('crop/', {
                 method: 'POST',
                 data: form,
                 processData: false,
                 contentType: false,
                 success: function () {
-
-                    
                     alert('업로드 성공');
                 },
                 error: function () {
@@ -80,6 +81,18 @@ $(function () {
                 },
             });
 
+            // 이미지 캔버스에 띄우기
+            $('.them_img').empty().append('<img id="image" src="">');
+            var image = $('#image');
+            image.attr("src", "media/adv.png");
+            
+            //이미지 다운로드
+            var link = document.createElement('a');
+            var src = image[0].getAttribute('src');
+            link.href = src
+            link.download = src
+            console.log(link)
+            link.click();
         } else {
             alert('사진을 업로드 해주세요');
             $('input[type="file"]').focus();
