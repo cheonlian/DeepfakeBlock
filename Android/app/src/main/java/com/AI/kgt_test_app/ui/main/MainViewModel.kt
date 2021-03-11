@@ -9,6 +9,8 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.AI.kgt_test_app.R
@@ -104,7 +106,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
     fun sendImage(Image: Bitmap, store_path:File): Boolean {
         Log.d(TAG + "_SEND", "Send Image Start")
         val scope = CoroutineScope(Dispatchers.IO)
-        var output: Bitmap? = null
+        var output: Bitmap?
 
         scope.launch {
             val Image_File = File.createTempFile(fileName, ".png", store_path)
@@ -144,6 +146,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
                         output = BitmapFactory.decodeStream(responseBody)
                         Log.d(TAG + "_SEND", "Send Image End")
                         saveBitmap(output)
+                        onButtonClick()
                     } else {
                         Log.e(TAG + "_SEND", "Fail 2: ${response.body()}")
                     }
@@ -158,4 +161,32 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         Log.d(TAG + "_SEND", "Send Image End")
         return true
     }
+
+    private val _showErrorToast = MutableLiveData<Event<Boolean>>()
+
+    val showErrorToast: LiveData<Event<Boolean>> = _showErrorToast
+
+    fun onButtonClick() {
+        _showErrorToast.value = Event(true)
+    }
+}
+
+
+open class Event<out T>(private val content: T) {
+    var hasBeenHandled = false
+        private set
+
+    fun getContentIfNotHandled(): T? {
+        return if (hasBeenHandled) { // 이벤트가 이미 처리 되었다면
+            null // null을 반환하고,
+        } else { // 그렇지 않다면
+            hasBeenHandled = true // 이벤트가 처리되었다고 표시한 후에
+            content // 값을 반환합니다.
+        }
+    }
+
+    /**
+     * 이벤트의 처리 여부에 상관 없이 값을 반환합니다.
+     */
+    fun peekContent(): T = content
 }
