@@ -1,16 +1,14 @@
-package com.KGT_AI.cheonlian
+package com.AI.kgt_test_app
 
-import android.Manifest
-import android.Manifest.permission.CAMERA
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.*
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.KGT_AI.cheonlian.ui.main.MainFragment
-import com.KGT_AI.cheonlian.ui.main.MainFragment.Companion.REQUEST_IMAGE_CAPTURE
+import com.AI.kgt_test_app.ui.main.MainFragment
+import com.AI.kgt_test_app.ui.main.MainFragment.Companion.REQUEST_IMAGE_CAPTURE
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,8 +17,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
-                    .commitNow()
+                .replace(R.id.container, MainFragment.newInstance())
+                .commitNow()
         }
 
         if (!checkPersmission(this.applicationContext))
@@ -29,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestPermission() {
         ActivityCompat.requestPermissions(this, arrayOf(READ_EXTERNAL_STORAGE, CAMERA),
-                REQUEST_IMAGE_CAPTURE)
+            REQUEST_IMAGE_CAPTURE)
     }
 
 
@@ -37,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkPersmission(context: Context): Boolean {
         return (ContextCompat.checkSelfPermission(context, CAMERA) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(context, READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                ContextCompat.checkSelfPermission(context, WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(context, INTERNET) == PackageManager.PERMISSION_GRANTED)
     }
 }
