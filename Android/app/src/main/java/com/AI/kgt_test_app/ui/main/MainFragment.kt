@@ -1,5 +1,6 @@
 package com.AI.kgt_test_app.ui.main
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
@@ -20,6 +21,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.toBitmap
 import com.AI.kgt_test_app.R
 import java.io.File
 import java.io.FileInputStream
@@ -47,11 +49,13 @@ class MainFragment : Fragment() {
         lateinit var trans:Button
 
         lateinit var file_path:File
+        lateinit var store_path:File
 
         var currentPhotoPath: String? = null
 
         private lateinit var viewModel: MainViewModel
 
+        @SuppressLint("SimpleDateFormat")
         val fileName = "VISION_" + SimpleDateFormat("yyMMdd_HHmm").format(Date())
     }
 
@@ -88,8 +92,9 @@ class MainFragment : Fragment() {
                     .show()
             }
             else {
-                Log.d(TAG + "_TRANS", "Photo path: $currentPhotoPath")
-                if (viewModel.saveBitmap(viewModel.sendImage(currentPhotoPath!!)) == null){
+                val d = imageView.drawable.toBitmap()
+                Log.d(TAG + "_TRANS", "Photo path: ${currentPhotoPath}")
+                if (viewModel.saveBitmap(viewModel.sendImage(d, store_path)) == null){
                     Toast.makeText(this.activity!!.applicationContext, "Save Fail...", Toast.LENGTH_SHORT)
                         .show()
                 }else {
@@ -105,8 +110,9 @@ class MainFragment : Fragment() {
             val bitmap = getImage()
             imageView.setImageBitmap(bitmap)
         }else if (requestCode == REQUEST_GALLERY_TAKE && resultCode == RESULT_OK){
-            currentPhotoPath = data?.data!!.path
-            imageView.setImageURI(data?.data) // handle chosen image
+            val bitmap = data?.data
+            currentPhotoPath = bitmap!!.path
+            imageView.setImageURI(bitmap) // handle chosen image
         }
     }
 
@@ -128,7 +134,8 @@ class MainFragment : Fragment() {
     private fun createImageFile(): File {
         // Create an image file name
         val storageDir: File = this.context!!.getExternalFilesDir(Environment.DIRECTORY_DCIM)!!
-        Log.d(TAG + "_CREATETEMP", "Storage Path: ${storageDir.absolutePath.toString()}")
+        store_path = storageDir
+        Log.d(TAG + "_CREATETEMP", "Storage Path: ${storageDir.absolutePath}")
         return File.createTempFile(
             fileName, /* prefix */
             ".png", /* suffix */
