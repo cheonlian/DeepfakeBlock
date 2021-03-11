@@ -21,6 +21,7 @@ def index(request, id):
     return Response(serializer.data)
 
 
+"""
 from tog.dataset_utils.preprocessing import letterbox_image_padded
 from keras import backend as K
 from tog.models.yolov3 import YOLOv3_Darknet53_Face
@@ -65,3 +66,4 @@ def post(request):
     output.save("media/adv.png")
     response = FileResponse(open("media/adv.png", "rb"))
     return response
+"""

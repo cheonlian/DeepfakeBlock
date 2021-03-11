@@ -11,16 +11,18 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
-    <!-- Dropzone -->
-    <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
-    <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+    <!-- cropper.js -->
+    <link rel="stylesheet" type="text/css" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://fengyuanchen.github.io/cropper/js/cropper.js"></script>
 </head>
 <body>
     <ul class = 'nav'>
-        <li class= 'nav-item'>DeepfakeBlock</li>
+        <li class= 'nav-item'><a href="{% url 'web-main' %}">DeepfakeBlock</a></li>
         <li class= 'nav-item'>Documentation</li>
     </ul>
     {% block content %}
     {% endblock content %}
+    <script src="{% static 'js/crop.js' %}"></script>
 </body>
 </html>
