@@ -101,6 +101,11 @@ class MainFragment : Fragment() {
                 if (viewModel.sendImage(d, store_path)){
                     Toast.makeText(this.activity!!.applicationContext, "Saving... Wait Next Message", Toast.LENGTH_SHORT)
                             .show()
+                    viewModel.showErrorToast.observe(this, androidx.lifecycle.Observer {
+                        it.getContentIfNotHandled()?.let {
+                            Toast.makeText(this.activity!!.applicationContext, "Save Success!! :)", Toast.LENGTH_SHORT).show()
+                        }
+                    })
                 }else {
                     Toast.makeText(this.activity!!.applicationContext, "Save Fail...", Toast.LENGTH_SHORT)
                             .show()
