@@ -89,7 +89,7 @@ def crop(request):
     cropped_img = img.crop((0, 0, 500, 500))
     img.paste(cropped_img, area)
     # img.show()
-    output = predict(img)
+    output = attack(img)
     output.save("media/adv.png")
     response = FileResponse(open("media/adv.png", "rb"))
     return response
