@@ -25,7 +25,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("<int:id>/", views.index),
     path("post/", views.post),
-    path("", web_views.MainView.as_view(), name="web-main"),
+    # path("", web_views.MainView.as_view(), name="web-main"),
+    path("", web_views.index, name="web-main"),
     path("upload/", web_views.upload_view),
     # url path create
     path("crop/", views.crop),

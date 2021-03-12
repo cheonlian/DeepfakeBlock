@@ -1,4 +1,5 @@
 import os
+from django.http.response import HttpResponseNotAllowed
 
 from django.shortcuts import redirect, render
 from django.http import FileResponse
@@ -15,14 +16,16 @@ from PIL import Image as pilImage
 class MainView(TemplateView):
     template_name = "main.html"
 
+def index(request):
+    return render(request,"main.html")
+
 
 # 이 함수를 사용해서 새로운 탬플릿을 만드는 것도 좋아보여요
 @csrf_exempt
 def upload_view(request):
     if request.method == "POST":
-        output_image = crop(request)
-        return output_image
-
+        crop(request)
+    return HttpResponse("")
 
 
 
