@@ -24,14 +24,18 @@ class MainActivity : AppCompatActivity() {
         if (!checkPersmission(this.applicationContext))
             requestPermission()
     }
-
+    /*  # requestPermission #
+        권한 요청
+     */
     private fun requestPermission() {
         ActivityCompat.requestPermissions(this, arrayOf(READ_EXTERNAL_STORAGE, CAMERA),
             REQUEST_IMAGE_CAPTURE)
     }
 
 
-    // 권한 체크
+    /*  # checkPersmission #
+        권한 허가 됐는지 검사
+     */
     private fun checkPersmission(context: Context): Boolean {
         return (ContextCompat.checkSelfPermission(context, CAMERA) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(context, READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
