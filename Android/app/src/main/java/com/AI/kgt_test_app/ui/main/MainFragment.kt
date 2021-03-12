@@ -124,58 +124,65 @@ class MainFragment : Fragment() {
 
                 xy = listOf(result.cropRect.left, result.cropRect.top, result.cropRect.right, result.cropRect.bottom) // 크롭 좌표
                 val realxy = listOf(result.wholeImageRect.left, result.wholeImageRect.top, result.wholeImageRect.right, result.wholeImageRect.bottom) // 사진 원래 좌표
-                val str_xy = xy.map { it.toString() }
-                val d = imageView.drawable.toBitmap()
-                Log.d(TAG + "_TRANS", "Photo path: ${currentPhotoPath}")
+                val xywh = listOf((xy[0] + xy[2]) / 2, (xy[1] + xy[3]) / 2, xy[2] - xy[1], xy[3] - xy[1])
+                val str_xy = xywh.map { it.toString() }
+                val targetImage = imageView.drawable.toBitmap()
 
-                if (is_crob < 2){
-                    Toast.makeText(
-                            this.activity!!.applicationContext,
-                            "Saving... Wait Next Message",
-                            Toast.LENGTH_SHORT
-                    ).show()
-                    if (is_crob == 0){
-                        if (viewModel.sendImage(d, store_path)) {
-                            viewModel.showSaveToast.observe(this, {
-                                it.getContentIfNotHandled()?.let {
-                                    Toast.makeText(
-                                            this.activity!!.applicationContext,
-                                            "Save Success!! :)",
-                                            Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            })
-                        }else{
-                            viewModel.showSaveToast.observe(this, {
-                                it.getContentIfNotHandled()?.let {
-                                    Toast.makeText(
-                                            this.activity!!.applicationContext,
-                                            "Save Fail... :)",
-                                            Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            })
-                        }
-                    }else if(is_crob == 1){
-                        if (viewModel.crop_sendImage(d, store_path, str_xy)){
-                            viewModel.showSaveToast.observe(this, {
-                                it.getContentIfNotHandled()?.let {
-                                    Toast.makeText(
-                                            this.activity!!.applicationContext,
-                                            "Save Success!! :)",
-                                            Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            })
-                        }
-                    }
-                }else {
-                    Toast.makeText(
+                Log.d(TAG + "_TRANS", "Photo path: ${currentPhotoPath}")
+                Toast.makeText(
                         this.activity!!.applicationContext,
-                        "Save Fail...",
+                        "Saving... Wait Next Message",
                         Toast.LENGTH_SHORT
-                    ).show()
+                ).show()
+
+                if (is_crob == 0){      // crob 하지 않는 방식
+                    // 저장후 성공시 성공 메시지 실패시 실패 메시지
+                    if (viewModel.sendImage(targetImage, store_path)) {
+                        viewModel.showSaveToast.observe(this, {
+                            it.getContentIfNotHandled()?.let {
+                                Toast.makeText(
+                                        this.activity!!.applicationContext,
+                                        "Save Success!! :)",
+                                        Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        })
+                    }else{
+                        viewModel.showSaveToast.observe(this, {
+                            it.getContentIfNotHandled()?.let {
+                                Toast.makeText(
+                                        this.activity!!.applicationContext,
+                                        "Save Fail... :)",
+                                        Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        })
+                    }
+                }else if(is_crob == 1) {     // crob을 진행한 방식
+                    // 저장후 성공시 성공 메시지 실패시 실패 메시지
+                    if (viewModel.crop_sendImage(targetImage, store_path, str_xy)) {
+                        viewModel.showSaveToast.observe(this, {
+                            it.getContentIfNotHandled()?.let {
+                                Toast.makeText(
+                                        this.activity!!.applicationContext,
+                                        "Save Success!! :)",
+                                        Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        })
+                    } else {
+                        viewModel.showSaveToast.observe(this, {
+                            it.getContentIfNotHandled()?.let {
+                                Toast.makeText(
+                                        this.activity!!.applicationContext,
+                                        "Save Fail... :)",
+                                        Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        })
+                    }
                 }
+
             }
             Log.d(TAG + "_Crop Activity Result", "End")
         }else if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
