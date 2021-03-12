@@ -6,21 +6,21 @@ $(function () {
         $('.them_img').empty().append('<img id="image" src="">');
         var image = $('#image');
         var imgFile = $('#photoBtn').val();
-        img=document.getElementById("photoBtn");
+        img = document.getElementById("photoBtn");
         var fileForm = /(.*?)\.(jpg|jpeg|png)$/;
 
         // 이미지가 확장자 확인 후 노출
         if (imgFile.match(fileForm)) {
             var reader = new FileReader();
-            reader.onload = function(event) { 
-        		image.attr("src", event.target.result);
-        		cropper = image.cropper( {
-        			dragMode: 'crop',
-        			viewMode:1,
-        			// aspectRatio: 1,
-        			autoCropArea:1,
-        			minCropBoxWidth:10,
-       				restore: false,
+            reader.onload = function (event) {
+                image.attr("src", event.target.result);
+                cropper = image.cropper({
+                    dragMode: 'crop',
+                    viewMode: 1,
+                    // aspectRatio: 1,
+                    autoCropArea: 1,
+                    minCropBoxWidth: 10,
+                    restore: false,
                     guides: false,
                     center: false,
                     highlight: false,
@@ -36,17 +36,6 @@ $(function () {
             return;
         }
     });
-    // 사진 다시 올리기 버튼
-    $('#resetPhoto').on('click', function () {
-        if ($('input[type="file"]').val() != "") {
-            $('#photoBtn').val('');
-            $('.them_img img').attr('src', '').remove();
-            $('.btn_wrap a:last-child').removeClass('bg1');
-            $('input[type="file"]').click();
-        } else {
-            //alert('업로드된 사진이 없습니다.');
-        }
-    });
     // 업로드 버튼
     $('#complete').on('click', function () {
         $('.them_img').append('<div class="result_box"><img id="result" src=""></div>');
@@ -55,9 +44,8 @@ $(function () {
         var canvas;
         if ($('input[type="file"]').val() != "") {
             canvas = image.cropper('getData');
-            console.log(canvas);
             var form = new FormData();
-            // console.log(img.files[0]["name"]);
+            console.log(img.files);
             form.append("input_image", img.files[0], img.files[0]["name"]);
             form.append("x", canvas.x);
             form.append("y", canvas.y);
@@ -81,18 +69,22 @@ $(function () {
                 },
             });
 
-            // 이미지 캔버스에 띄우기
-            $('.them_img').empty().append('<img id="image" src="">');
-            var image = $('#image');
-            image.attr("src", "media/adv.png");
-            
-            //이미지 다운로드
-            // var link = document.createElement('a');
-            // var src = image[0].getAttribute('src');
-            // link.href = src
-            // link.download = src
-            // console.log(link)
-            // link.click();
+            setTimeout(function() {
+                $('.them_img').empty().append('<img id="image" src="">');
+                var image = $('#image');
+                image.attr("src", "media/adv.png");
+                console.log(image)
+                
+                // 이미지 캔버스에 띄우기
+                
+                //이미지 다운로드
+                var link = document.createElement('a');
+                var src = image[0].getAttribute('src');
+                link.href = src
+                link.download = src
+                console.log(link)
+                link.click();
+            }, 3000);
         } else {
             alert('사진을 업로드 해주세요');
             $('input[type="file"]').focus();
