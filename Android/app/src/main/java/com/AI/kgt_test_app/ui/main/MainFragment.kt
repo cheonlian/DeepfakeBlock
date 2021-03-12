@@ -21,16 +21,13 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.net.toUri
 import com.AI.kgt_test_app.R
 import com.theartofdev.edmodo.cropper.CropImage
-import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
 import java.lang.Exception
-import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -123,35 +120,61 @@ class MainFragment : Fragment() {
             val result = CropImage.getActivityResult(data)
             Log.d(TAG + "_Crop Activity Result", result.toString())
             if (resultCode == RESULT_OK) {
+                val is_crob = 1     //crob인 경우 1 아닌 경우 0
+
                 xy = listOf(result.cropRect.left, result.cropRect.top, result.cropRect.right, result.cropRect.bottom) // 크롭 좌표
                 val realxy = listOf(result.wholeImageRect.left, result.wholeImageRect.top, result.wholeImageRect.right, result.wholeImageRect.bottom) // 사진 원래 좌표
                 val str_xy = xy.map { it.toString() }
                 val d = imageView.drawable.toBitmap()
                 Log.d(TAG + "_TRANS", "Photo path: ${currentPhotoPath}")
 
-                if (viewModel.crop_sendImage(d, store_path, str_xy)) {
+                if (is_crob < 2){
                     Toast.makeText(
-                        this.activity!!.applicationContext,
-                        "Saving... Wait Next Message",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                    viewModel.showSaveToast.observe(this, {
-                        it.getContentIfNotHandled()?.let {
-                            Toast.makeText(
-                                this.activity!!.applicationContext,
-                                "Save Success!! :)",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            this.activity!!.applicationContext,
+                            "Saving... Wait Next Message",
+                            Toast.LENGTH_SHORT
+                    ).show()
+                    if (is_crob == 0){
+                        if (viewModel.sendImage(d, store_path)) {
+                            viewModel.showSaveToast.observe(this, {
+                                it.getContentIfNotHandled()?.let {
+                                    Toast.makeText(
+                                            this.activity!!.applicationContext,
+                                            "Save Success!! :)",
+                                            Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            })
+                        }else{
+                            viewModel.showSaveToast.observe(this, {
+                                it.getContentIfNotHandled()?.let {
+                                    Toast.makeText(
+                                            this.activity!!.applicationContext,
+                                            "Save Fail... :)",
+                                            Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            })
                         }
-                    })
-                } else {
+                    }else if(is_crob == 1){
+                        if (viewModel.crop_sendImage(d, store_path, str_xy)){
+                            viewModel.showSaveToast.observe(this, {
+                                it.getContentIfNotHandled()?.let {
+                                    Toast.makeText(
+                                            this.activity!!.applicationContext,
+                                            "Save Success!! :)",
+                                            Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            })
+                        }
+                    }
+                }else {
                     Toast.makeText(
                         this.activity!!.applicationContext,
                         "Save Fail...",
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
                 }
             }
             Log.d(TAG + "_Crop Activity Result", "End")
