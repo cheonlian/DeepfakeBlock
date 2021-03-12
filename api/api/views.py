@@ -101,7 +101,6 @@ def crop(request):
     output = img.crop(area)
 
     img.paste(output, area)
-    print("오냐?")
     img.save("media/adv.png")
     response = FileResponse(open("media/adv.png", "rb"))
     return response
