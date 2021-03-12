@@ -8,12 +8,12 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.AI.kgt_test_app.R
+import com.AI.kgt_test_app.api.CrobReqapi
 import com.AI.kgt_test_app.api.Reqapi
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.*
@@ -93,7 +93,6 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
             resolver.update(uri, values, null, null)
 
             Log.d(TAG + "_SAVE", "Save Image End")
-            MainFragment().Toast_Message()
             return uri
         } catch (e: Exception) {
             Log.e(TAG + "_SAVE", "error : $e")
@@ -102,12 +101,10 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         }
     }
 
-
     fun sendImage(Image: Bitmap, store_path:File): Boolean {
         Log.d(TAG + "_SEND", "Send Image Start")
         val scope = CoroutineScope(Dispatchers.IO)
         var output: Bitmap?
-
         scope.launch {
             val Image_File = File.createTempFile(fileName, ".png", store_path)
             val out: OutputStream = FileOutputStream(Image_File)
@@ -146,7 +143,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
                         output = BitmapFactory.decodeStream(responseBody)
                         Log.d(TAG + "_SEND", "Send Image End")
                         saveBitmap(output)
-                        onButtonClick()
+                        bitmap_Save_Message()
                     } else {
                         Log.e(TAG + "_SEND", "Fail 2: ${response.body()}")
                     }
@@ -162,12 +159,70 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         return true
     }
 
-    private val _showErrorToast = MutableLiveData<Event<Boolean>>()
 
-    val showErrorToast: LiveData<Event<Boolean>> = _showErrorToast
+    fun crop_sendImage(Image: Bitmap, store_path:File, xy:List<String>): Boolean {
+        Log.d(TAG + "_SEND", "Send Image Start")
+        var output: Bitmap?
 
-    fun onButtonClick() {
-        _showErrorToast.value = Event(true)
+        val Image_File = File.createTempFile(fileName, ".png", store_path)
+        val out: OutputStream = FileOutputStream(Image_File)
+        Image.compress(Bitmap.CompressFormat.PNG, 100, out)
+
+        Log.d(TAG + "_SEND", "File path: ${Image_File.path}")
+        val bitmap = File(Image_File.absolutePath)
+
+        var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/png"), bitmap)
+        var body = MultipartBody.Part.createFormData("input_image", fileName, requestBody)
+
+        val gson = GsonBuilder()
+                .setLenient()
+                .create()
+
+        val client:OkHttpClient = OkHttpClient.Builder()
+                .connectTimeout(2, TimeUnit.MINUTES)
+                .readTimeout(2, TimeUnit.MINUTES)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build()
+
+        val retrofit = Retrofit.Builder()
+                .baseUrl(SERVER_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+
+        val server = retrofit.create(CrobReqapi::class.java)
+
+        server.getImage(body, xy[0], xy[1], xy[2], xy[3]).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                Log.d(TAG + "_SEND", "Success Connect")
+                if (response?.isSuccessful) {
+                    Log.d(TAG + "_SEND", "Success: ${response.body()}")
+                    var responseBody = response.body()!!.byteStream()
+                    output = BitmapFactory.decodeStream(responseBody)
+                    Log.d(TAG + "_SEND", "Send Image End")
+                    saveBitmap(output)
+                    bitmap_Save_Message()
+                } else {
+                    Log.e(TAG + "_SEND", "Fail 2: ${response.body()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e(TAG + "_SEND", "Fail 1: ${t.message}")
+            }
+        })
+
+        Log.d(TAG + "_SEND", "Send Image End")
+        return true
+    }
+
+
+    private val _showSaveMSG = MutableLiveData<Event<Boolean>>()
+
+    val showSaveToast: LiveData<Event<Boolean>> = _showSaveMSG
+
+    fun bitmap_Save_Message() {
+        _showSaveMSG.value = Event(true)
     }
 }
 
@@ -184,9 +239,4 @@ open class Event<out T>(private val content: T) {
             content // 값을 반환합니다.
         }
     }
-
-    /**
-     * 이벤트의 처리 여부에 상관 없이 값을 반환합니다.
-     */
-    fun peekContent(): T = content
 }
