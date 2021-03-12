@@ -116,6 +116,8 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         성공 여부를 return
 
         ## variable ##
+        isSuccess = 성공 여부
+
         ImageFile = 보낼 이미지를 임시 저장할 파일
         out = 이미지를 만들기 위한 OutputStream
         bitmap = 보낼 Image 파일
@@ -134,6 +136,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
     fun Send_Image(Image: Bitmap, store_path:File): Boolean {
         Log.d(TAG + "_SEND", "Send Image Start")
         var output: Bitmap?
+        var isSuccess = false
 
         val ImageFile = File.createTempFile(fileName, ".png", store_path)
         val out: OutputStream = FileOutputStream(ImageFile)
@@ -173,18 +176,23 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
                     Log.d(TAG + "_SEND", "Send Image End")
                     save_Bitmap(output)
                     bitmap_Save_Message()
+                    isSuccess = true
                 } else {
                     Log.e(TAG + "_SEND", "Fail 2: ${response.body()}")
+                    bitmap_Save_Message()
+                    isSuccess = false
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e(TAG + "_SEND", "Fail 1: ${t.message}")
+                bitmap_Save_Message()
+                isSuccess = false
             }
         })
 
         Log.d(TAG + "_SEND", "Send Image End")
-        return true
+        return isSuccess
     }
 
     /*  # crop_send_Image #
@@ -192,6 +200,8 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         성공 여부를 return
 
         ## variable ##
+        isSuccess = 성공 여부
+
         ImageFile = 보낼 이미지를 임시 저장할 파일
         out = 이미지를 만들기 위한 OutputStream
         bitmap = 보낼 Image 파일
@@ -207,9 +217,10 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         server.getImage(body, x, y, w, h)
         - api.kt -> CrobReqapi -> getImage
      */
-    fun Crop_Send_Image(Image: Bitmap, store_path:File, xy:List<String>): Boolean {
+    fun Crop_Send_Image(Image: Bitmap, store_path:File, xy:List<Float>): Boolean {
         Log.d(TAG + "_SEND", "Send Image Start")
         var output: Bitmap?
+        var isSuccess = false
 
         val Image_File = File.createTempFile(fileName, ".png", store_path)
         val out: OutputStream = FileOutputStream(Image_File)
@@ -239,6 +250,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
 
         val server = retrofit.create(CrobReqapi::class.java)
 
+        Log.d(TAG + "_SEND", "$body, ${xy[0]}, ${xy[1]}, ${xy[2]}, ${xy[3]}")
         server.getImage(body, xy[0], xy[1], xy[2], xy[3]).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 Log.d(TAG + "_SEND", "Success Connect")
@@ -249,18 +261,23 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
                     Log.d(TAG + "_SEND", "Send Image End")
                     save_Bitmap(output)
                     bitmap_Save_Message()
+                    isSuccess = true
                 } else {
                     Log.e(TAG + "_SEND", "Fail 2: ${response.body()}")
+                    bitmap_Save_Message()
+                    isSuccess = false
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e(TAG + "_SEND", "Fail 1: ${t.message}")
+                bitmap_Save_Message()
+                isSuccess = false
             }
         })
 
         Log.d(TAG + "_SEND", "Send Image End")
-        return true
+        return isSuccess
     }
 
 

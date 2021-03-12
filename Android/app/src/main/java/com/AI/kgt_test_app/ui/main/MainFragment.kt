@@ -105,11 +105,13 @@ class MainFragment : Fragment() {
 
 
         camera.setOnClickListener {
+            trans.text = "변환"
             Log.d(TAG + "_Camera", "Start")
             dispatchTakePictureIntent()
             Log.d(TAG + "_Camera", "End")
         }
         gallery.setOnClickListener {
+            trans.text = "변환"
             Log.d(TAG + "_Gallery", "Start")
             openGalleryForImage()
             Log.d(TAG + "_Gallery", "End")
@@ -125,6 +127,7 @@ class MainFragment : Fragment() {
                 )
                     .show()
             } else {
+                trans.text = "처리중 ..."
                 CropImage.activity(fileUri).start(context!!, this)
             }
             Log.d(TAG + "_Crop", "End")
@@ -169,19 +172,19 @@ class MainFragment : Fragment() {
         }else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
             Log.d(TAG + "_Crop Result", "Start")
             val result = CropImage.getActivityResult(data)
+            trans.text = "저장중 ..."
             if (resultCode == RESULT_OK) {
                 val isCrob = 1
 
                 var xy = listOf(result.cropRect.left, result.cropRect.top, result.cropRect.right, result.cropRect.bottom)
                 val realXY = listOf(result.wholeImageRect.left, result.wholeImageRect.top, result.wholeImageRect.right, result.wholeImageRect.bottom)
 
-                val x = xy[0]
-                val y = xy[1]
-                val w = xy[2] - xy[0]
-                val h = xy[3] - xy[1]
+                val x = xy[0].toFloat()
+                val y = xy[1].toFloat()
+                val w = (xy[2] - xy[0]).toFloat()
+                val h = (xy[3] - xy[1]).toFloat()
 
                 val xywh = listOf(x, y, w, h)
-                val strXY = xywh.map { it.toString() }
                 val targetImage = imageView.drawable.toBitmap()
 
                 Log.d(TAG + "_TRANS", "Photo path: ${currentPhotoPath}")
@@ -201,20 +204,22 @@ class MainFragment : Fragment() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+                            trans.text = "저장 성공!!"
                         })
                     }else{
                         viewModel.Show_Save_Toast.observe(this, {
                             it.getContentIfNotHandled()?.let {
                                 Toast.makeText(
                                     this.activity!!.applicationContext,
-                                    "Save Fail... :)",
+                                    "Save Fail... :(",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+                            trans.text = "저장 실패ㅠㅠ"
                         })
                     }
                 }else if(isCrob == 1) {
-                    if (viewModel.Crop_Send_Image(targetImage, storePath, strXY)) {
+                    if (viewModel.Crop_Send_Image(targetImage, storePath, xywh)) {
                         viewModel.Show_Save_Toast.observe(this, {
                             it.getContentIfNotHandled()?.let {
                                 Toast.makeText(
@@ -223,24 +228,28 @@ class MainFragment : Fragment() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+                            trans.text = "저장 성공!!"
                         })
                     } else {
                         viewModel.Show_Save_Toast.observe(this, {
                             it.getContentIfNotHandled()?.let {
                                 Toast.makeText(
                                     this.activity!!.applicationContext,
-                                    "Save Fail... :)",
+                                    "Save Fail... :(",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+                            trans.text = "저장 실패ㅠㅠ"
                         })
                     }
                 }
 
             }
             Log.d(TAG + "_Crop Activity Result", "End")
-        }else if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
+        }else if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
             Log.e(TAG, "CROP ERROR!!")
+            trans.text = "저장 실패ㅠㅠ"
+        }
     }
 
     /*  # onRequestPermissionsResult #

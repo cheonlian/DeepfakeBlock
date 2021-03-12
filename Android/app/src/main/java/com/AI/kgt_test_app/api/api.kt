@@ -19,6 +19,6 @@ interface Reqapi{
  */
 interface CrobReqapi{
     @Multipart
-    @POST("crob/")
-    fun getImage(@Part Image: MultipartBody.Part, @Part("x") x: String, @Part("y") y: String, @Part("w") w: String, @Part("h") h: String): Call<ResponseBody>
+    @POST("crop/")
+    fun getImage(@Part Image: MultipartBody.Part, @Part("x") x: Float, @Part("y") y: Float, @Part("w") w: Float, @Part("h") h: Float): Call<ResponseBody>
 }
