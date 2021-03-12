@@ -24,7 +24,7 @@ from Web import views as web_views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("<int:id>/", views.index),
-    # path("post/", views.post),
+    path("post/", views.post),
     path("", web_views.MainView.as_view(), name="web-main"),
     path("upload/", web_views.upload_view),
     # url path create

@@ -41,34 +41,37 @@ session = tf.Session(config=tf_config)
 # detector = YOLOv3_Darknet53_Face(weights=weights)
 
 
-#모든 사이즈 공격 가능
+# 모든 사이즈 공격 가능
 def attack(input):
-    w,h = input.size
-    newsize = (w+416, h+416)
-    new_image = pilImage.new('RGB', newsize, (0, 0, 0))
-    for x in range(0,w,416):
-        for y in range(0,h,416):
-            area = (x,y,x+416,y+416)
+    w, h = input.size
+    newsize = (w + 416, h + 416)
+    new_image = pilImage.new("RGB", newsize, (0, 0, 0))
+    for x in range(0, w, 416):
+        for y in range(0, h, 416):
+            area = (x, y, x + 416, y + 416)
             cropped_img = input.crop(area)
-            rgb = pilImage.new('RGB',(416,416),(0,0,0))
-            rgb.paste(cropped_img,(0,0))
+            rgb = pilImage.new("RGB", (416, 416), (0, 0, 0))
+            rgb.paste(cropped_img, (0, 0))
             cropped_noise = attack416(rgb)
-            new_image.paste(cropped_noise, (x,y))
-    area = (0,0,w, h)
+            new_image.paste(cropped_noise, (x, y))
+    area = (0, 0, w, h)
     output = new_image.crop(area)
-    print(w,h)
+    print(w, h)
     return output
 
-#416*416인 이미지만 공격가능
+
+# 416*416인 이미지만 공격가능
 def attack416(input):
-    eps = 8 / 255.       
-    eps_iter = 2 / 255.  
-    n_iter = 10   
-    npimg = np.asarray(input)[np.newaxis, :, :, :] / 255.
+    eps = 8 / 255.0
+    eps_iter = 2 / 255.0
+    n_iter = 10
+    npimg = np.asarray(input)[np.newaxis, :, :, :] / 255.0
     with graph.as_default():
-        x_adv_untargeted = tog_untargeted(victim=detector, x_query=npimg, n_iter=n_iter, eps=eps, eps_iter=eps_iter)
-    img = x_adv_untargeted[0]*255
-    output = pilImage.fromarray(img.astype('uint8'), 'RGB')
+        x_adv_untargeted = tog_untargeted(
+            victim=detector, x_query=npimg, n_iter=n_iter, eps=eps, eps_iter=eps_iter
+        )
+    img = x_adv_untargeted[0] * 255
+    output = pilImage.fromarray(img.astype("uint8"), "RGB")
     return output
 
 
@@ -83,14 +86,21 @@ def post(request):
     response = FileResponse(open("media/adv.png", "rb"))
     return response
 
+
 # def crop(x,y,w,h,input):
 
 
 #     return output
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def crop(request):
-    x1, y1, x2, y2 = int(request.data["x1"]), int(request.data["y1"]), int(request.data["x2"]), int(request.data["y2"])
+    x1, y1, x2, y2 = (
+        int(request.data["x1"]),
+        int(request.data["y1"]),
+        int(request.data["x2"]),
+        int(request.data["y2"]),
+    )
     # x, y = x2 - x1, y2 - y1
     img = pilImage.open(request.data["input_image"])
     area = (x1, y1, x2, y2)
