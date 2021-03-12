@@ -87,12 +87,12 @@ $(function () {
             image.attr("src", "media/adv.png");
             
             //이미지 다운로드
-            var link = document.createElement('a');
-            var src = image[0].getAttribute('src');
-            link.href = src
-            link.download = src
-            console.log(link)
-            link.click();
+            // var link = document.createElement('a');
+            // var src = image[0].getAttribute('src');
+            // link.href = src
+            // link.download = src
+            // console.log(link)
+            // link.click();
         } else {
             alert('사진을 업로드 해주세요');
             $('input[type="file"]').focus();

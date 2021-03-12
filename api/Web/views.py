@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from api.models import Image
 
-from api.views import attack, crop
+from api.views import crop
 from PIL import Image as pilImage
 
 
