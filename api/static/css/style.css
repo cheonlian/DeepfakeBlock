@@ -4,11 +4,17 @@ body {
     text-decoration: none;
 }
 
+a {
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
 .nav {
     display: flex;
     justify-content: center;
     list-style-type: none;
     border-bottom: 1px solid #ccc;
+    background-color: royalblue;
     margin: 0;
     padding: 20px 0;
 }
@@ -20,14 +26,111 @@ body {
     font-weight: 700;
 }
 
-.dropzone {
-    margin: 20px auto;
-    background-color: #f8f8f8 !important;
-    border: 2px dashed #ccc !important;
-    border-radius: 5px !important;
-    width: 80%
+/* cropper */
+
+input, label {
+    cursor: pointer !important;
+    width: 100%;
+    padding: 15px 0;
+    text-align: center;
 }
 
-.dropzone:hover {
-    background-color: aliceblue !important;
+.photo_box{
+    margin: 20px auto;
+    max-width: 500px;
+}
+
+.upload_btn{
+    overflow: hidden;
+    width: 100%;
+}
+
+.upload_btn #photoBtn{
+    display: none;
+}
+
+.upload_btn .upload{
+    background-color: royalblue;
+    text-decoration: none;
+    color: #fff;
+
+    cursor: pointer !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+}
+
+.upload:hover{
+    background-color: steelblue;
+}
+
+.photo_them{
+    position: relative;
+    margin-top: 20px;
+    width: 100%;
+    height: 250px;
+    background: #eee;
+}
+
+.them_img, .result_box{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.result_box{
+    background: #fff;
+}
+
+.them_img img, .result_box img{
+    display: block;
+    margin: 0 auto;
+    height: 100%;
+}
+
+
+
+#complete{
+    display: block;
+    margin-top: 20px;
+    /* padding: 15px 0; */
+    height: 50px;
+    line-height: 50px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    background-color: royalblue;
+}
+
+#complete:hover{
+    background-color: steelblue;
+}
+
+/*loader*/
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:100);
+
+
+#loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+  margin-top: 10px;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
 }

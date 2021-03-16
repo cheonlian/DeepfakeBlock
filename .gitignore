@@ -5,6 +5,8 @@
 # vscode
 api/.vscode/
 
+api/tog/model_weights/
+
 ### Django ###
 
 *.log

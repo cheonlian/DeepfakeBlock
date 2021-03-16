@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="photo_box">
+  <div class="upload_btn">
+    <div class="upload">
+    	<input type="file" name="photoBtn" accept="image/jpeg, image/png" capture="camera" id="photoBtn"><label for="photoBtn">사진 첨부하기</label>
+    </div>
+  </div>
+  <div class="photo_them" style="text-align: center; line-height: 250px; color: rgb(122, 122, 122);">
+    <h3> drag & drop image</h3>
+    <div class="them_img">
+    	<img id="image" src="">
+      
+    </div>
+  </div>
+  <a href="javascript:void(0);" id="complete">업로드</a>
+</div>
+
+{% endblock content %}

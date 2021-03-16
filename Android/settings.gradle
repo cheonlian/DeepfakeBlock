@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "KGT_AI"
+rootProject.name = "KGT_TEST_APP"

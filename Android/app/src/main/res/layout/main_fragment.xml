@@ -11,7 +11,7 @@
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="VISION"
+        android:text="@string/vision"
         android:layout_marginTop="10pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,8 +21,8 @@
         android:id="@+id/camera_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="카메라"
-        android:layout_marginRight="50pt"
+        android:text="@string/btn1"
+        android:layout_marginEnd="50pt"
         android:layout_marginTop="50pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,12 +33,13 @@
         android:id="@+id/gallery_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="갤러리"
-        android:layout_marginLeft="50pt"
+        android:text="@string/btn2"
+        android:layout_marginStart="50pt"
         android:layout_marginTop="50pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageView
         android:id="@+id/imageView"
@@ -47,13 +48,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/camera_btn"
-        tools:ignore="MissingConstraints" />
+        />
+
+    <com.theartofdev.edmodo.cropper.CropImageView
+        android:id="@+id/cropImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        tools:ignore="MissingConstraints"
+        />
 
     <Button
         android:id="@+id/trans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="변환"
+        android:text="@string/btn3"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/message"
         app:layout_constraintEnd_toEndOf="@+id/message"/>
