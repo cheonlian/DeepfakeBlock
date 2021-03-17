@@ -44,29 +44,25 @@ detector = YOLOv3_Darknet53_Face(weights=weights)
 # 모든 사이즈 공격 가능
 def attack(input):
     w, h = input.size
-    newsize = (w + 416, h + 416)
+    newsize = (w//32 * 32 + 32, h//32 *32 + 32)
     new_image = pilImage.new("RGB", newsize, (0, 0, 0))
-    for x in range(0, w, 416):
-        for y in range(0, h, 416):
-            area = (x, y, x + 416, y + 416)
-            cropped_img = input.crop(area)
-            rgb = pilImage.new("RGB", (416, 416), (0, 0, 0))
-            rgb.paste(cropped_img, (0, 0))
-            cropped_noise = attack416(rgb)
-            new_image.paste(cropped_noise, (x, y))
+    new_image.paste(input, (0, 0))
+    noise_image = attack32(new_image)
     area = (0, 0, w, h)
-    output = new_image.crop(area)
-    print(w, h)
+    output = noise_image.crop(area)
     return output
 
 
-# 416*416인 이미지만 공격가능
-def attack416(input):
+# 32배수인 이미지만 공격가능
+def attack32(input):
     eps = 8 / 255.0
     eps_iter = 2 / 255.0
     n_iter = 10
     npimg = np.asarray(input)[np.newaxis, :, :, :] / 255.0
+
+    h,w = input.size
     with graph.as_default():
+        detector.model_img_size = (w,h)
         x_adv_untargeted = tog_untargeted(
             victim=detector, x_query=npimg, n_iter=n_iter, eps=eps, eps_iter=eps_iter
         )
@@ -85,8 +81,6 @@ def post(request):
     output.save("media/adv.png")
     response = FileResponse(open("media/adv.png", "rb"))
     return response
-
-
 
 @api_view(["POST"])
 def crop(request):
