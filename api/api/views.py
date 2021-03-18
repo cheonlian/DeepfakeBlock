@@ -82,6 +82,7 @@ def post(request):
     response = FileResponse(open("media/adv.png", "rb"))
     return response
 
+
 @api_view(["POST"])
 def crop(request):
     x, y, w, h = int(request.POST["x"].split(".")[0]), int(request.POST["y"].split(".")[0]), int(request.POST["w"].split(".")[0]), int(request.POST["h"].split(".")[0])
