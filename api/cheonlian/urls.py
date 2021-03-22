@@ -16,19 +16,21 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from api import views
+from api import views as api_views
 from django.conf.urls.static import static
 from django.conf import settings
 from Web import views as web_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("<int:id>/", views.index),
-    path("post/", views.post),
-    # path("", web_views.MainView.as_view(), name="web-main"),
+
+    # api views
+    path("<int:id>/", api_views.index),
+    path("post/", api_views.post),
+    path("crop/", api_views.crop),
+
+    # web_views
     path("", web_views.index, name="web-main"),
     path("upload/", web_views.upload_view),
-    # url path create
-    path("crop/", views.crop),
-]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
