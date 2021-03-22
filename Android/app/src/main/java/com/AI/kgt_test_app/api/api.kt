@@ -22,3 +22,8 @@ interface CrobReqapi{
     @POST("crop/")
     fun getImage(@Part Image: MultipartBody.Part, @Part("x") x: Float, @Part("y") y: Float, @Part("w") w: Float, @Part("h") h: Float): Call<ResponseBody>
 }
+
+interface ReqPreviewapi{
+    @POST("post/")
+    fun getImage(@Query("noise") noise:Int): Call<ResponseBody>
+}
