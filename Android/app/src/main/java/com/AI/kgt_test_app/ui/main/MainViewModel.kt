@@ -281,7 +281,22 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
 
 
     /* # req_preview
-        noise 정도를 입력 받아 preview 요청
+        noise 정도를 입력 받아 preview 요청후 preview return
+
+        ## variable ##
+        preview: 이미지 preview
+
+        requestBody = 보낼 Image를 담은 requestbody
+        body = body
+        gson = gson을 사용하기 위한 빌더
+        client = 응답 시간 조절을 위한 client
+        retrofit = api주소와 연결된 retrofit
+        server = api주소로 요청할 api를 불러옴
+
+
+        ## function ##
+        server.getImage(body, x, y, w, h)
+        - api.kt -> ReqPreviewapi -> getImage
      */
     fun Req_preview(noise: Int): Bitmap?{
         var preview: Bitmap? = null

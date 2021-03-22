@@ -111,6 +111,7 @@ class MainFragment : Fragment() {
 
         noise.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                // noisebar가 변경 되면 preview 요청
                 // preView.setImageBitmap(viewModel.Req_preview(noise.progress))
             }
 
