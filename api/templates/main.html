@@ -2,28 +2,27 @@
 
 {% block content %}
 
-{% comment %} <div class="photo_box"> {% endcomment %}
 <div class="">
   <div class="d-flex mt-3">
-    <div class="upload_btn col-9">
-      <div class="upload">
+    <div class="upload_btn col-9 align-items-center" style="display: flex; flex-direction: column">
+      <div class="upload" style="width: 200px">
         <input type="file" name="photoBtn" accept="image/jpeg, image/png" capture="camera" id="photoBtn"><label for="photoBtn">사진 첨부하기</label>
       </div>
-      <div class="photo_them" style="text-align: center; line-height: 250px; color: rgb(122, 122, 122);">
+      <div class="photo_them" style="text-align: center; line-height: 84vh; color: rgb(122, 122, 122);">
         <b style="font-size: 20px"> drag & drop image</b>
         <div class="them_img">
           <img id="image" src="">
         </div>
       </div>
-      <div class="d-flex">
-        <input type="range" name="noise" id="noise" min="1" max="5" step="1">
-        <button class="btn btn-light m-3" style="width: 100px; background-color: royalblue; color: white">업로드</button>
-      </div>
     </div>
     <div class="col-3">
       <h4 style="text-align: center; font-weight: bold">Option</h4>
-      <div>sample image</div>
-      <div>sample attack rate</div>
+      <div class="sample_them">
+        sample image
+      </div>
+      <div class="d-flex">
+        <input type="range" name="noise" id="noise" min="1" max="5" step="1">
+      </div>
       <a href="javascript:void(0);" id="complete">업로드</a>
     </div>
   </div>

@@ -2,14 +2,14 @@
 {% load bootstrap4 %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deepfake Block</title>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style1.css' %}">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
     <!-- cropper.js -->
@@ -22,7 +22,7 @@
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
 </head>
-<body>
+<body style="height: 100%">
     <nav class="navbar navbar-light" style="background-color: royalblue;">
         <a class="nav-link active" href="{% url 'web-main' %}" style="color: white"><h4 style="font-weight: bold">DeepfakeBlock</h4></a>
         <a class="nav-link" href="https://github.com/cheonlian/DeepfakeBlock"><i class="fab fa-github 5x fa-2x"></i></a>

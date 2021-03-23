@@ -35,16 +35,6 @@ input, label {
     text-align: center;
 }
 
-.photo_box{
-    margin: 20px auto;
-    max-width: 500px;
-}
-
-.upload_btn{
-    overflow: hidden;
-    width: 100%;
-}
-
 .upload_btn #photoBtn{
     display: none;
 }
@@ -70,7 +60,15 @@ input, label {
     position: relative;
     margin-top: 20px;
     width: 100%;
-    height: 250px;
+    height: 100%;
+    background: #eee;
+}
+
+.sample_them{
+    position: relative;
+    margin-top: 20px;
+    width: 100%;
+    height: 300px;
     background: #eee;
 }
 
