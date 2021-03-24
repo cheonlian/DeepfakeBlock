@@ -107,7 +107,7 @@ $(document).ready(function () {
                 toggleDragModeOnDblclick: false
             });
             uploadFile = files[0];
-            btnGroup.style.display = "block";
+            // btnGroup.style.display = "block";
             zoomInBtn.addEventListener('click', function () { image.cropper("zoom", 0.1) });
             zoomOutBtn.addEventListener('click', function () { image.cropper("zoom", -0.1) });
         } else {

@@ -91,7 +91,7 @@ input, label {
 
 .btn-group {
     bottom: 10px;
-    display: none;
+    /* display: absolute; */
 }
 
 #complete{
