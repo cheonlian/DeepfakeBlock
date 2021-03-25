@@ -21,28 +21,28 @@ def index(request, id):
     return Response(serializer.data)
 
 
-# from tog.dataset_utils.preprocessing import letterbox_image_padded
-# from keras import backend as K
-# from tog.models.yolov3 import YOLOv3_Darknet53_Face
-# from tog.tog.attacks import *
-# import tensorflow as tf
+from tog.dataset_utils.preprocessing import letterbox_image_padded
+from keras import backend as K
+from tog.models.yolov3 import YOLOv3_Darknet53_Face
+from tog.tog.attacks import *
+import tensorflow as tf
 
-# K.clear_session()
-# global graph
-# graph = tf.get_default_graph()
-
-
-# tf_config = tf.ConfigProto()
-# tf_config.gpu_options.allow_growth = True
-# session = tf.Session(config=tf_config)
+K.clear_session()
+global graph
+graph = tf.get_default_graph()
 
 
-# weights = "tog/model_weights/yolo_face.h5"
-# detector = YOLOv3_Darknet53_Face(weights=weights)
+tf_config = tf.ConfigProto()
+tf_config.gpu_options.allow_growth = True
+session = tf.Session(config=tf_config)
+
+
+weights = "tog/model_weights/yolo_face.h5"
+detector = YOLOv3_Darknet53_Face(weights=weights)
 
 
 # 모든 사이즈 공격 가능
-def attack(input):
+def attack(input, noise):
     w, h = input.size
     newsize = (w + 416, h + 416)
     new_image = pilImage.new("RGB", newsize, (0, 0, 0))
@@ -52,7 +52,7 @@ def attack(input):
             cropped_img = input.crop(area)
             rgb = pilImage.new("RGB", (416, 416), (0, 0, 0))
             rgb.paste(cropped_img, (0, 0))
-            cropped_noise = attack416(rgb)
+            cropped_noise = attack416(rgb, noise)
             new_image.paste(cropped_noise, (x, y))
     area = (0, 0, w, h)
     output = new_image.crop(area)
@@ -61,10 +61,10 @@ def attack(input):
 
 
 # 416*416인 이미지만 공격가능
-def attack416(input):
+def attack416(input, noise):
     eps = 8 / 255.0
     eps_iter = 2 / 255.0
-    n_iter = 10
+    n_iter = noise * 4
     npimg = np.asarray(input)[np.newaxis, :, :, :] / 255.0
     with graph.as_default():
         x_adv_untargeted = tog_untargeted(
@@ -90,16 +90,15 @@ def post(request):
 
 @api_view(["POST"])
 def crop(request):
-    x, y, w, h = int(request.POST["x"].split(".")[0]), int(request.POST["y"].split(".")[0]), int(request.POST["w"].split(".")[0]), int(request.POST["h"].split(".")[0])
+    x, y, w, h, n = int(request.POST["x"].split(".")[0]), int(request.POST["y"].split(".")[0]), int(request.POST["w"].split(".")[0]), int(request.POST["h"].split(".")[0]), int(request.POST["n"])
     print(request.POST)
     x1, y1, x2, y2 = x , y, x + w, y + h
     img = pilImage.open(request.FILES["input_image"])
     area = (x1, y1, x2, y2)
     print(area)
     
-    ## 이부분 주석 해제하면 attack됩니다
     cropped_img = img.crop(area)
-    output = attack(cropped_img)
+    output = attack(cropped_img, n)
     img.paste(output, area)
     img.save("media/adv.png")
     response = FileResponse(open("media/adv.png", "rb"))

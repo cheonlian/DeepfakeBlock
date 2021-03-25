@@ -94,22 +94,30 @@ input, label {
     /* display: absolute; */
 }
 
-#complete{
-    display: block;
+.buttons{
+    display: inline-block;
     margin-top: 20px;
-    /* padding: 15px 0; */
+    margin: 15px;
     height: 50px;
     line-height: 50px;
-    width: 100%;
+    width: 25%;
     text-align: center;
     color: #fff;
     text-decoration: none;
     background-color: royalblue;
 }
 
-#complete:hover{
+.buttons:hover{
     background-color: steelblue;
 }
+
+.sample_them{
+    text-align: center;
+    height: auto;
+    /* border: black solid 1px; */
+}
+
+
 
 /*loader*/
 
@@ -125,7 +133,7 @@ input, label {
   border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
-  margin-top: 10px;
+  /* margin-top: 15px; */
 }
 
 @keyframes spin {
