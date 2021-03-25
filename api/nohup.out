@@ -1,0 +1,43 @@
+[I 08:04:05.027 NotebookApp] Serving notebooks from local directory: /home/ec2-user/team2_cheonlian/DeepfakeBlock/api
+[I 08:04:05.027 NotebookApp] Jupyter Notebook 6.3.0 is running at:
+[I 08:04:05.027 NotebookApp] http://ip-172-31-42-39.us-east-2.compute.internal:8888/?token=ac892509d24482bebe747f69697b04e160ed36f8d6ddc815
+[I 08:04:05.027 NotebookApp]  or http://127.0.0.1:8888/?token=ac892509d24482bebe747f69697b04e160ed36f8d6ddc815
+[I 08:04:05.028 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 08:04:05.033 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/ec2-user/.local/share/jupyter/runtime/nbserver-14630-open.html
+    Or copy and paste one of these URLs:
+        http://ip-172-31-42-39.us-east-2.compute.internal:8888/?token=ac892509d24482bebe747f69697b04e160ed36f8d6ddc815
+     or http://127.0.0.1:8888/?token=ac892509d24482bebe747f69697b04e160ed36f8d6ddc815
+[I 08:04:23.115 NotebookApp] 302 GET / (127.0.0.1) 1.150000ms
+[I 08:04:23.296 NotebookApp] 302 GET /tree? (127.0.0.1) 1.080000ms
+[I 08:04:34.231 NotebookApp] 302 POST /login?next=%2Ftree%3F (127.0.0.1) 1.680000ms
+[I 08:04:44.463 NotebookApp] Kernel started: bcad93fd-3510-4b60-bb90-d6955f8692b5, name: python3
+2021-03-25 08:04:49.783646: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2021-03-25 08:04:49.895092: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:898] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-03-25 08:04:49.895902: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: Tesla K80 major: 3 minor: 7 memoryClockRate(GHz): 0.8235
+pciBusID: 0000:00:1e.0
+totalMemory: 11.17GiB freeMemory: 11.12GiB
+2021-03-25 08:04:49.895929: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2021-03-25 08:04:50.138397: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-03-25 08:04:50.138460: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2021-03-25 08:04:50.138469: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2021-03-25 08:04:50.138606: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10776 MB memory) -> physical GPU (device: 0, name: Tesla K80, pci bus id: 0000:00:1e.0, compute capability: 3.7)
+[I 08:06:45.314 NotebookApp] Saving file at /Untitled.ipynb
+[I 08:08:46.554 NotebookApp] Saving file at /Untitled.ipynb
+[I 08:10:45.535 NotebookApp] Saving file at /Untitled.ipynb
+[I 08:12:45.533 NotebookApp] Saving file at /Untitled.ipynb
+[I 08:14:45.749 NotebookApp] Saving file at /Untitled.ipynb
+[I 08:16:46.192 NotebookApp] Saving file at /Untitled.ipynb
+[I 08:18:46.734 NotebookApp] Saving file at /Untitled.ipynb
+[I 08:20:46.910 NotebookApp] Saving file at /Untitled.ipynb
+[I 08:21:31.904 NotebookApp] Saving file at /Untitled.ipynb
+[I 08:21:49.088 NotebookApp] Starting buffering for bcad93fd-3510-4b60-bb90-d6955f8692b5:2b7ec7ca25ad42fe852f1095d681abe2
+[I 08:21:49.644 NotebookApp] Saving file at /Untitled.ipynb
+[I 08:21:59.185 NotebookApp] Discarding 9 buffered messages for bcad93fd-3510-4b60-bb90-d6955f8692b5:2b7ec7ca25ad42fe852f1095d681abe2
+[I 08:22:12.416 NotebookApp] Starting buffering for bcad93fd-3510-4b60-bb90-d6955f8692b5:7b02b6c07fc54739b66b14bb2122e969
+[I 08:22:22.140 NotebookApp] Discarding 5 buffered messages for bcad93fd-3510-4b60-bb90-d6955f8692b5:7b02b6c07fc54739b66b14bb2122e969
+[I 08:22:50.210 NotebookApp] Starting buffering for bcad93fd-3510-4b60-bb90-d6955f8692b5:aba05802ff264062be9d10c66a802f74
+[I 11:13:25.534 NotebookApp] Malformed HTTP message from 142.93.216.221: Malformed HTTP version in HTTP Request-Line: 'v\x1d\x9c7)¾K\x13\x01þè\x84Ú²\x00¥\x00\x0eê}f\x85\x00\x8c'
