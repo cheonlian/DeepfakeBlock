@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">[KGT] 2조 Testing App</string>
-    <string name="vision">VISION</string>
+    <string name="vision">Preview</string>
     <string name="btn1">카메라</string>
     <string name="btn2">갤러리</string>
-    <string name="btn3">변환</string>
+    <string name="btn3">범위 지정</string>
+    <string name="seekbarTitle">Noise Percent</string>
+    <string name="Title">Vision</string>
 </resources>

@@ -13,8 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.AI.kgt_test_app.R
-import com.AI.kgt_test_app.api.CrobReqapi
-import com.AI.kgt_test_app.api.Reqapi
+import com.AI.kgt_test_app.api.*
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import retrofit2.Call
@@ -56,7 +55,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         mimeType = 파일 타입
         values = 파일에 들어갈 정보들
      */
-    fun save_Bitmap(bitmap: Bitmap?) : Uri? {
+    fun Save_Bitmap(bitmap: Bitmap?) : Uri? {
         Log.d(TAG + "_SAVE", "Save Image Start")
         if (bitmap == null){
             Log.e(TAG + "_SAVE", "No Image")
@@ -133,7 +132,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         server.getImage(body)
         api.kt -> Reqapi -> getImage
      */
-    fun Send_Image(Image: Bitmap, store_path:File): Boolean {
+    fun Send_Image(Image: Bitmap, store_path: File): Boolean {
         Log.d(TAG + "_SEND", "Send Image Start")
         var output: Bitmap?
         var isSuccess = false
@@ -174,7 +173,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
                     var responseBody = response.body()!!.byteStream()
                     output = BitmapFactory.decodeStream(responseBody)
                     Log.d(TAG + "_SEND", "Send Image End")
-                    save_Bitmap(output)
+                    Save_Bitmap(output)
                     bitmap_Save_Message()
                     isSuccess = true
                 } else {
@@ -217,7 +216,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         server.getImage(body, x, y, w, h)
         - api.kt -> CrobReqapi -> getImage
      */
-    fun Crop_Send_Image(Image: Bitmap, store_path:File, xy:List<Float>): Boolean {
+    fun Crop_Send_Image(Image: Bitmap, store_path:File, xy:List<Float>, noise: Int): Boolean {
         Log.d(TAG + "_SEND", "Send Image Start")
         var output: Bitmap?
         var isSuccess = false
@@ -250,8 +249,8 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
 
         val server = retrofit.create(CrobReqapi::class.java)
 
-        Log.d(TAG + "_SEND", "$body, ${xy[0]}, ${xy[1]}, ${xy[2]}, ${xy[3]}")
-        server.getImage(body, xy[0], xy[1], xy[2], xy[3]).enqueue(object : Callback<ResponseBody> {
+        Log.d(TAG + "_SEND", "$body, ${xy[0]}, ${xy[1]}, ${xy[2]}, ${xy[3]}, ${noise}")
+        server.getImage(body, xy[0], xy[1], xy[2], xy[3], noise).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 Log.d(TAG + "_SEND", "Success Connect")
                 if (response?.isSuccessful) {
@@ -259,7 +258,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
                     var responseBody = response.body()!!.byteStream()
                     output = BitmapFactory.decodeStream(responseBody)
                     Log.d(TAG + "_SEND", "Send Image End")
-                    save_Bitmap(output)
+                    Save_Bitmap(output)
                     bitmap_Save_Message()
                     isSuccess = true
                 } else {
@@ -278,6 +277,65 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
 
         Log.d(TAG + "_SEND", "Send Image End")
         return isSuccess
+    }
+
+
+    /* # req_preview
+        noise 정도를 입력 받아 preview 요청후 preview return
+
+        ## variable ##
+        preview: 이미지 preview
+
+        requestBody = 보낼 Image를 담은 requestbody
+        body = body
+        gson = gson을 사용하기 위한 빌더
+        client = 응답 시간 조절을 위한 client
+        retrofit = api주소와 연결된 retrofit
+        server = api주소로 요청할 api를 불러옴
+
+
+        ## function ##
+        server.getImage(body, x, y, w, h)
+        - api.kt -> ReqPreviewapi -> getImage
+     */
+    fun Req_preview(noise: Int): Bitmap?{
+        var preview: Bitmap? = null
+
+        val gson = GsonBuilder()
+                .setLenient()
+                .create()
+
+        val client:OkHttpClient = OkHttpClient.Builder()
+                .connectTimeout(2, TimeUnit.MINUTES)
+                .readTimeout(2, TimeUnit.MINUTES)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build()
+
+        val retrofit = Retrofit.Builder()
+                .baseUrl(SERVER_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+
+        val server = retrofit.create(ReqPreviewapi::class.java)
+
+        server.getImage(noise).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response?.isSuccessful) {
+                    Log.d(TAG + "_SEND", "Success: ${response.body()}")
+                    var responseBody = response.body()!!.byteStream()
+                    preview = BitmapFactory.decodeStream(responseBody)
+                } else {
+                    Log.e(TAG + "_SEND", "Fail 2: ${response.body()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e(TAG + "_SEND", "Fail 1: ${t.message}")
+            }
+        })
+
+        return preview
     }
 
 
