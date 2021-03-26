@@ -8,6 +8,9 @@ api/.vscode/
 api/tog/model_weights/
 api/image/
 
+Untitiled.ipynb
+videoattack.ipynb
+
 ### Django ###
 
 *.log

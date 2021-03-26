@@ -19,6 +19,10 @@ a {
     padding: 20px 0;
 }
 
+.navbar {
+    height: 60px;
+}
+
 .nav-item {
     margin: 0 5%;
     padding: 5px 10px;
@@ -33,16 +37,6 @@ input, label {
     width: 100%;
     padding: 15px 0;
     text-align: center;
-}
-
-.photo_box{
-    margin: 20px auto;
-    max-width: 500px;
-}
-
-.upload_btn{
-    overflow: hidden;
-    width: 100%;
 }
 
 .upload_btn #photoBtn{
@@ -68,9 +62,17 @@ input, label {
 
 .photo_them{
     position: relative;
+    margin: 20px 0;    
+    width: 100%;
+    height: 100%;
+    background: #eee;
+}
+
+.sample_them{
+    position: relative;
     margin-top: 20px;
     width: 100%;
-    height: 250px;
+    height: 300px;
     background: #eee;
 }
 
@@ -89,27 +91,37 @@ input, label {
 .them_img img, .result_box img{
     display: block;
     margin: 0 auto;
-    height: 100%;
 }
 
+.btn-group {
+    bottom: 10px;
+    /* display: absolute; */
+}
 
-
-#complete{
-    display: block;
+.buttons{
+    display: inline-block;
     margin-top: 20px;
-    /* padding: 15px 0; */
+    margin: 15px;
     height: 50px;
     line-height: 50px;
-    width: 100%;
+    width: 25%;
     text-align: center;
     color: #fff;
     text-decoration: none;
     background-color: royalblue;
 }
 
-#complete:hover{
+.buttons:hover{
     background-color: steelblue;
 }
+
+.sample_them{
+    text-align: center;
+    height: auto;
+    /* border: black solid 1px; */
+}
+
+
 
 /*loader*/
 
@@ -125,7 +137,7 @@ input, label {
   border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
-  margin-top: 10px;
+  /* margin-top: 15px; */
 }
 
 @keyframes spin {

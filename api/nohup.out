@@ -41,3 +41,10 @@ totalMemory: 11.17GiB freeMemory: 11.12GiB
 [I 08:22:22.140 NotebookApp] Discarding 5 buffered messages for bcad93fd-3510-4b60-bb90-d6955f8692b5:7b02b6c07fc54739b66b14bb2122e969
 [I 08:22:50.210 NotebookApp] Starting buffering for bcad93fd-3510-4b60-bb90-d6955f8692b5:aba05802ff264062be9d10c66a802f74
 [I 11:13:25.534 NotebookApp] Malformed HTTP message from 142.93.216.221: Malformed HTTP version in HTTP Request-Line: 'v\x1d\x9c7)¾K\x13\x01þè\x84Ú²\x00¥\x00\x0eê}f\x85\x00\x8c'
+[I 11:14:02.901 NotebookApp] Malformed HTTP message from 142.93.216.221: Malformed HTTP request line
+[C 11:28:50.876 NotebookApp] received signal 15, stopping
+[I 11:28:50.877 NotebookApp] Shutting down 1 kernel
+[I 11:28:56.218 NotebookApp] Kernel shutdown: bcad93fd-3510-4b60-bb90-d6955f8692b5
+[I 11:28:56.219 NotebookApp] Shutting down 0 terminals
+[I 11:28:56.219 NotebookApp] KernelRestarter: restarting kernel (1/5), keep random ports
+[IPKernelApp] WARNING | Parent appears to have exited, shutting down.
