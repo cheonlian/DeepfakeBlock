@@ -132,7 +132,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         server.getImage(body)
         api.kt -> Reqapi -> getImage
      */
-    fun Send_Image(Image: Bitmap, store_path:File): Boolean {
+    fun Send_Image(Image: Bitmap, store_path: File): Boolean {
         Log.d(TAG + "_SEND", "Send Image Start")
         var output: Bitmap?
         var isSuccess = false
@@ -216,7 +216,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         server.getImage(body, x, y, w, h)
         - api.kt -> CrobReqapi -> getImage
      */
-    fun Crop_Send_Image(Image: Bitmap, store_path:File, xy:List<Float>): Boolean {
+    fun Crop_Send_Image(Image: Bitmap, store_path:File, xy:List<Float>, noise: Int): Boolean {
         Log.d(TAG + "_SEND", "Send Image Start")
         var output: Bitmap?
         var isSuccess = false
@@ -249,8 +249,8 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
 
         val server = retrofit.create(CrobReqapi::class.java)
 
-        Log.d(TAG + "_SEND", "$body, ${xy[0]}, ${xy[1]}, ${xy[2]}, ${xy[3]}")
-        server.getImage(body, xy[0], xy[1], xy[2], xy[3]).enqueue(object : Callback<ResponseBody> {
+        Log.d(TAG + "_SEND", "$body, ${xy[0]}, ${xy[1]}, ${xy[2]}, ${xy[3]}, ${noise}")
+        server.getImage(body, xy[0], xy[1], xy[2], xy[3], noise).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 Log.d(TAG + "_SEND", "Success Connect")
                 if (response?.isSuccessful) {

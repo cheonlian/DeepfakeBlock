@@ -121,6 +121,13 @@ class MainFragment : Fragment() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 previewTitle.text = "노이즈 " + noise.progress.toString()
+                when(noise.progress){
+                    1 -> preView.setImageResource(R.drawable.noise1)
+                    2 -> preView.setImageResource(R.drawable.noise2)
+                    3 -> preView.setImageResource(R.drawable.noise3)
+                    4 -> preView.setImageResource(R.drawable.noise4)
+                    5 -> preView.setImageResource(R.drawable.noise5)
+                }
             }
         })
 
@@ -239,7 +246,7 @@ class MainFragment : Fragment() {
                         })
                     }
                 }else if(isCrob == 1) {
-                    if (viewModel.Crop_Send_Image(targetImage, storePath, xywh)) {
+                    if (viewModel.Crop_Send_Image(targetImage, storePath, xywh, noise.progress)) {
                         viewModel.Show_Save_Toast.observe(this, {
                             it.getContentIfNotHandled()?.let {
                                 Toast.makeText(
