@@ -6,6 +6,13 @@
 api/.vscode/
 
 api/tog/model_weights/
+api/tog/image/
+model.ipynb
+test.ipynb
+
+### Docker ###
+Dockerfile
+dockerignore
 
 ### Django ###
 
