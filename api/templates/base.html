@@ -1,0 +1,34 @@
+{% load static %}
+{% load bootstrap4 %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Block</title>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <!-- cropper.js -->
+    <link rel="stylesheet" type="text/css" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://fengyuanchen.github.io/cropper/js/cropper.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+</head>
+<body>
+    <nav class="navbar navbar-light" style="background-color: royalblue;">
+        <a class="nav-link active" href="{% url 'web-main' %}" style="color: white"><h4 style="font-weight: bold">DeepfakeBlock</h4></a>
+        <a class="nav-link" href="https://github.com/cheonlian/DeepfakeBlock"><i class="fab fa-github 5x fa-2x"></i></a>
+    </nav>
+    {% block content %}
+    {% endblock content %}
+    <script src="{% static 'js/crop.js' %}"></script>
+</body>
+</html>

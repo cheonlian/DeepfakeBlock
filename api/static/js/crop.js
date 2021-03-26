@@ -47,7 +47,7 @@ $(document).ready(function () {
     $('#complete').on('click', function(){upload();});
 
     //드래그앤 드롭
-    $('.photo_box')
+    $('.them_img')
   .on("dragover", dragOver)
   .on("dragleave", dragOver)
   .on("drop", uploadFiles);
