@@ -5,6 +5,8 @@ var first = true;
 const btnGroup = document.getElementById('btn-group');
 const zoomInBtn = document.getElementById('ZoomInBtn');
 const zoomOutBtn = document.getElementById('ZoomOutBtn');
+const dragModeBtn = document.getElementById('dragModeBtn');
+const cropModeBtn = document.getElementById('cropModeBtn');
 
 var uploadFile;
 $(document).ready(function () {
@@ -38,6 +40,8 @@ $(document).ready(function () {
             btnGroup.style.display = "block";
             zoomInBtn.addEventListener('click', function () { image.cropper("zoom", 0.1) });
             zoomOutBtn.addEventListener('click', function () { image.cropper("zoom", -0.1) });
+            dragModeBtn.addEventListener('click', function () { image.cropper("setDragMode", "move") });
+            cropModeBtn.addEventListener('click', function () { image.cropper("setDragMode", "crop") });
         } else {
             alert("이미지 파일(jpg, png형식의 파일)만 올려주세요");
             $('#photoBtn').focus();
@@ -83,7 +87,7 @@ $(document).ready(function () {
         $('.them_img').empty().append('<img id="image" src="">');
 
         var image = $('#image');
-        
+
         img = document.getElementById("photoBtn");
         var fileForm = /(.*?)\.(jpg|jpeg|png)$/;
 
@@ -108,6 +112,8 @@ $(document).ready(function () {
             // btnGroup.style.display = "block";
             zoomInBtn.addEventListener('click', function () { image.cropper("zoom", 0.1) });
             zoomOutBtn.addEventListener('click', function () { image.cropper("zoom", -0.1) });
+            dragModeBtn.addEventListener('click', function () { image.cropper("setDragMode", "move") });
+            cropModeBtn.addEventListener('click', function () { image.cropper("setDragMode", "crop") });
         } else {
             alert("이미지 파일(jpg, png형식의 파일)만 올려주세요");
             $('#photoBtn').focus();
@@ -153,7 +159,7 @@ function upload() {
                     var tmpDate = new Date();
                     image.attr("src", "media/adv.png?" + tmpDate.getTime());
 
-                    uploadState = 0;
+                    uploadState = 2;
                     // alert('업로드 성공');
                 },
                 error: function () {
@@ -177,10 +183,10 @@ function upload() {
         //동글뱅이 넣어주기
         //마우스 가도 손모양 안나오기
     }
-    else if (uploadState==2){
+    else if (uploadState == 2) {
         revert();
         $("#upload").html("변환");
-        uploadState=0;
+        uploadState = 0;
 
     }
 }
@@ -195,20 +201,20 @@ function download() {
     link.click();
 }
 
-function setNoise(){
+function setNoise() {
     var src = "media/noise_example/" + $("#noise").val() + ".png";
     $("#example").attr("src", src);
 }
 
-function clickToggle(){
-    if(first) return;
+function clickToggle() {
+    if (first) return;
     var val = event.target.checked;
     var tmpDate = new Date();
-    if(val) $('#image').attr("src", "media/after.png?" + tmpDate.getTime());
+    if (val) $('#image').attr("src", "media/after.png?" + tmpDate.getTime());
     else $('#image').attr("src", "media/adv.png?" + tmpDate.getTime());
 }
 
-function revert(){
+function revert() {
     var image = $("#image");
     image.attr("src", "media/ori.png");
     cropper = image.cropper({
@@ -228,4 +234,6 @@ function revert(){
     // btnGroup.style.display = "block";
     zoomInBtn.addEventListener('click', function () { image.cropper("zoom", 0.1) });
     zoomOutBtn.addEventListener('click', function () { image.cropper("zoom", -0.1) });
+    dragModeBtn.addEventListener('click', function () { image.cropper("setDragMode", "move") });
+    cropModeBtn.addEventListener('click', function () { image.cropper("setDragMode", "crop") });
 }
