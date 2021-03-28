@@ -19,6 +19,10 @@ a {
     padding: 20px 0;
 }
 
+.navbar {
+    height: 60px;
+}
+
 .nav-item {
     margin: 0 5%;
     padding: 5px 10px;

@@ -24,11 +24,14 @@
 </head>
 <body style="height: 100%">
     <nav class="navbar navbar-light" style="background-color: royalblue;">
-        <a class="nav-link active" href="{% url 'web-main' %}" style="color: white"><h4 style="font-weight: bold">DeepfakeBlock</h4></a>
+        <a class="nav-link active" href="{% url 'web-main' %}" style="color: white">
+            <h4 style="font-weight: bold">DeepfakeBlock</h4>
+        </a>
         <a class="nav-link" href="https://github.com/cheonlian/DeepfakeBlock"><i class="fab fa-github 5x fa-2x"></i></a>
     </nav>
     {% block content %}
     {% endblock content %}
     <script src="{% static 'js/crop.js' %}"></script>
 </body>
+
 </html>

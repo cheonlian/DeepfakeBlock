@@ -26,16 +26,11 @@ $(document).ready(function () {
                 cropper = image.cropper({
                     dragMode: 'crop',
                     viewMode: 1,
-                    // aspectRatio: 1,
-                    autoCropArea: 0.9,
-                    minCropBoxWidth: 10,
                     restore: false,
                     guides: false,
                     center: false,
                     highlight: false,
-                    cropBoxMovable: true,
-                    cropBoxResizable: true,
-                    toggleDragModeOnDblclick: false
+                    toggleDragModeOnDblclick: true
                 });
             }
             reader.readAsDataURL(event.target.files[0]);
@@ -190,7 +185,7 @@ function upload() {
     }
 }
 
-function download(){
+function download() {
     var image = $('#image');
     var link = document.createElement('a');
     var src = image[0].getAttribute('src');
