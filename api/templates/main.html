@@ -1,21 +1,56 @@
-{% extends 'index.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 
-<div class="photo_box">
-  <div class="upload_btn">
-    <div class="upload">
-    	<input type="file" name="photoBtn" accept="image/jpeg, image/png" capture="camera" id="photoBtn"><label for="photoBtn">사진 첨부하기</label>
+<div class="">
+  <div class="mt-3 d-flex justify-content-end">
+    <div class="upload_btn align-items-center flex-fill" style="margin: 10px; display: flex; flex-direction: column">
+      <div class="upload" style="width: 200px">
+        <input type="file" name="photoBtn" accept="image/jpeg, image/png" capture="camera" id="photoBtn">
+        <label for="photoBtn">사진 첨부하기</label>
+      </div>
+      <div class="photo_them" style="line-height: 76vh; text-align: center; color: rgb(122, 122, 122);">
+        <div style="margin: auto; font-size: 20px; font-weight: bold;"> drag & drop image</div>
+        <div class="them_img">
+          <img id="image" src="">
+        </div>
+      </div>
+        <div class="btn-group" id="btn-group">
+          <button id="ZoomInBtn" type="button" class="btn" data-method="zoom" data-option="0.1"
+            title="Zoom In" style="background-color: royalblue; color: #fff">
+            <span class="docs-tooltip" data-toggle="tooltip" title="cropper.zoom(0.1)">
+              <span class="fa fa-search-plus">+</span>
+            </span>
+          </button>
+          <button id="ZoomOutBtn" type="button" class="btn" data-method="zoom" data-option="-0.1"
+            title="Zoom Out" style="background-color: royalblue; color: #fff">
+            <span class="docs-tooltip" data-toggle="tooltip" title="cropper.zoom(-0.1)">
+              <span class="fa fa-search-minus">-</span>
+            </span>
+          </button>
+        </div>
+    </div>
+    <div style="width: 500px; margin: 10px;">
+      <h4 style="margin: 21px; text-align: center; font-weight: bold">Option</h4>
+      <div class="sample_them">
+        <img id="example" src="media/noise_example/3.png" height="250px">
+      </div>
+      <div class="d-flex">
+        <input type="range" name="noise" id="noise" min="1" max="5" step="1" onchange="setNoise()">
+      </div>
+      <div style="text-align: center;">
+      <a href="javascript:void(0);" class="buttons" id = "upload">변환</a>
+      <a href="javascript:void(0);" class="buttons" id = "download">다운로드</a>
+      </div>
+      <div style="text-align: center; margin-top: 30px;">
+        <div>Detect</div>
+        <label class="switch" style="text-align: center;">
+          <input type="checkbox" id = "toggle" onclick="clickToggle()">
+          <span class="slider round"></span>
+        </label>
+      </div>
     </div>
   </div>
-  <div class="photo_them" style="text-align: center; line-height: 250px; color: rgb(122, 122, 122);">
-    <h3> drag & drop image</h3>
-    <div class="them_img">
-    	<img id="image" src="">
-      
-    </div>
-  </div>
-  <a href="javascript:void(0);" id="complete">업로드</a>
 </div>
 
 {% endblock content %}

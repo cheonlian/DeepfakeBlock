@@ -26,25 +26,3 @@ def upload_view(request):
     if request.method == "POST":
         crop(request)
     return HttpResponse("")
-
-
-
-
-    #     x1, y1, x2, y2 = request.POST["x1"], request.POST["y1"], request.POST["x2"], request.POST["y2"]
-    #     print(x1,y1,x2,y2)
-    #     input_image = request.FILES["input_image"]
-    #     if input_image is not None:
-    #         # output = predict(pilImage.open(input_image))
-    #         output = pilImage.open(input_image)
-    #         output.save("media/test.png")
-
-            
-    #         response = FileResponse(
-    #             open("media/test.png", "rb"), content_type="image/png"
-    #         )
-    #         return response
-    #         # image 띄우기 완료 -> 어떻게 다운로드 할 수 있는지?
-    #         # render로 context 넘겨서 html상 띄울 수 있나?
-    #     else:
-    #         return redirect("web-main")
-    # return JsonResponse({"post": "false"})
