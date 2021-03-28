@@ -42,7 +42,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
      */
     companion object{
         private val TAG = "MAIN_VIEWMODEL"
-        private val SERVER_URL = "http://211.198.5.202:1111/"
+        private val SERVER_URL = "http://18.221.61.105:8000/"
 
         val fileName = "VISION_" + SimpleDateFormat("yyMMdd_HHmm").format(Date())
     }
@@ -154,7 +154,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         val client:OkHttpClient = OkHttpClient.Builder()
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(2, TimeUnit.MINUTES)
-                .writeTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(2, TimeUnit.MINUTES)
                 .build()
 
         val retrofit = Retrofit.Builder()
@@ -219,7 +219,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
     fun Crop_Send_Image(Image: Bitmap, store_path:File, xy:List<Float>, noise: Int): Boolean {
         Log.d(TAG + "_SEND", "Send Image Start")
         var output: Bitmap?
-        var isSuccess = false
+        var isSuccess = true
 
         val Image_File = File.createTempFile(fileName, ".png", store_path)
         val out: OutputStream = FileOutputStream(Image_File)
@@ -238,7 +238,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         val client:OkHttpClient = OkHttpClient.Builder()
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(2, TimeUnit.MINUTES)
-                .writeTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(2, TimeUnit.MINUTES)
                 .build()
 
         val retrofit = Retrofit.Builder()
@@ -259,8 +259,8 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
                     output = BitmapFactory.decodeStream(responseBody)
                     Log.d(TAG + "_SEND", "Send Image End")
                     Save_Bitmap(output)
+                    MainFragment.temp.setImageBitmap(output)
                     bitmap_Save_Message()
-                    isSuccess = true
                 } else {
                     Log.e(TAG + "_SEND", "Fail 2: ${response.body()}")
                     bitmap_Save_Message()
@@ -275,7 +275,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
             }
         })
 
-        Log.d(TAG + "_SEND", "Send Image End")
+        Log.d(TAG + "_SEND", "Send Image End${isSuccess}")
         return isSuccess
     }
 
@@ -298,8 +298,19 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         server.getImage(body, x, y, w, h)
         - api.kt -> ReqPreviewapi -> getImage
      */
-    fun Req_preview(noise: Int): Bitmap?{
+    fun Req_BoxPreview(Image:Bitmap, store_path:File, isOri:Boolean): Boolean?{
         var preview: Bitmap? = null
+        var isSuccess = false
+
+        val Image_File = File.createTempFile(fileName, ".png", store_path)
+        val out: OutputStream = FileOutputStream(Image_File)
+        Image.compress(Bitmap.CompressFormat.PNG, 100, out)
+
+        Log.d(TAG + "_SEND", "File path: ${Image_File.path}")
+        val bitmap = File(Image_File.absolutePath)
+
+        var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/png"), bitmap)
+        var body = MultipartBody.Part.createFormData("input_image", fileName, requestBody)
 
         val gson = GsonBuilder()
                 .setLenient()
@@ -308,7 +319,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
         val client:OkHttpClient = OkHttpClient.Builder()
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(2, TimeUnit.MINUTES)
-                .writeTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(2, TimeUnit.MINUTES)
                 .build()
 
         val retrofit = Retrofit.Builder()
@@ -319,12 +330,15 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
 
         val server = retrofit.create(ReqPreviewapi::class.java)
 
-        server.getImage(noise).enqueue(object : Callback<ResponseBody> {
+        server.getImage(body).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response?.isSuccessful) {
                     Log.d(TAG + "_SEND", "Success: ${response.body()}")
                     var responseBody = response.body()!!.byteStream()
                     preview = BitmapFactory.decodeStream(responseBody)
+                    if (isOri) MainFragment.preViewnt.setImageBitmap(preview)
+                    else MainFragment.preViewt.setImageBitmap(preview)
+                    isSuccess = true
                 } else {
                     Log.e(TAG + "_SEND", "Fail 2: ${response.body()}")
                 }
@@ -335,7 +349,7 @@ class MainViewModel(private val myApplication: Application) : ViewModel() {
             }
         })
 
-        return preview
+        return isSuccess
     }
 
 
