@@ -1,6 +1,7 @@
 var cropper;
 var img;
 var uploadState = 0;
+var first = true;
 const btnGroup = document.getElementById('btn-group');
 const zoomInBtn = document.getElementById('ZoomInBtn');
 const zoomOutBtn = document.getElementById('ZoomOutBtn');
@@ -9,8 +10,8 @@ var uploadFile;
 $(document).ready(function () {
     // 사진 업로드 버튼
     $('#photoBtn').on('change', function () {
+        $("#upload").html("변환");
         uploadState = 0;
-
         $('.them_img').empty().append('<img id="image" src="">');
         var image = $('#image');
         var imgFile = $('#photoBtn').val();
@@ -74,6 +75,8 @@ $(document).ready(function () {
         }
     }
     function uploadFiles(e) {
+        $("#upload").html("변환");
+
         e.stopPropagation();
         e.preventDefault();
         dragOver(e); //1
@@ -85,6 +88,7 @@ $(document).ready(function () {
         $('.them_img').empty().append('<img id="image" src="">');
 
         var image = $('#image');
+        
         img = document.getElementById("photoBtn");
         var fileForm = /(.*?)\.(jpg|jpeg|png)$/;
 
@@ -144,15 +148,17 @@ function upload() {
                 processData: false,
                 contentType: false,
                 success: function () {
-                    $('.them_img').empty().append('<img id="image" src="">');
-                    $("#upload").html("변환");
+                    first = false;
+                    $("#toggle").prop("checked", false);
+                    $('.them_img').empty().append('<img id="image" src="" style="width:100%;">');
+                    $("#upload").html("되돌리기");
 
                     var image = $('#image');
 
                     var tmpDate = new Date();
                     image.attr("src", "media/adv.png?" + tmpDate.getTime());
 
-                    uploadState = 0;
+                    uploadState = 2;
                     // alert('업로드 성공');
                 },
                 error: function () {
@@ -176,6 +182,12 @@ function upload() {
         //동글뱅이 넣어주기
         //마우스 가도 손모양 안나오기
     }
+    else if (uploadState==2){
+        revert();
+        $("#upload").html("변환");
+        uploadState=0;
+
+    }
 }
 
 function download(){
@@ -189,7 +201,36 @@ function download(){
 }
 
 function setNoise(){
-    
     var src = "media/noise_example/" + $("#noise").val() + ".png";
     $("#example").attr("src", src);
+}
+
+function clickToggle(){
+    if(first) return;
+    var val = event.target.checked;
+    var tmpDate = new Date();
+    if(val) $('#image').attr("src", "media/after.png?" + tmpDate.getTime());
+    else $('#image').attr("src", "media/adv.png?" + tmpDate.getTime());
+}
+
+function revert(){
+    var image = $("#image");
+    image.attr("src", "media/ori.png");
+    cropper = image.cropper({
+        dragMode: 'crop',
+        viewMode: 1,
+        // aspectRatio: 1,
+        autoCropArea: 1,
+        minCropBoxWidth: 10,
+        restore: false,
+        guides: false,
+        center: false,
+        highlight: false,
+        cropBoxMovable: true,
+        cropBoxResizable: true,
+        toggleDragModeOnDblclick: false
+    });
+    // btnGroup.style.display = "block";
+    zoomInBtn.addEventListener('click', function () { image.cropper("zoom", 0.1) });
+    zoomOutBtn.addEventListener('click', function () { image.cropper("zoom", -0.1) });
 }

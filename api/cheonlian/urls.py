@@ -28,6 +28,7 @@ urlpatterns = [
     path("<int:id>/", api_views.index),
     path("post/", api_views.post),
     path("crop/", api_views.crop),
+    path("detect/", api_views.detect),
 
     # web_views
     path("", web_views.index, name="web-main"),

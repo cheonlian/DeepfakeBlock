@@ -6,6 +6,7 @@
 api/.vscode/
 
 api/tog/model_weights/
+api/yolov3/yolov3_face.weights
 
 ### Django ###
 
