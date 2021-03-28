@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 /* # Reqapi #
    http://SERVER_URL/post로 이미지를 전송후 리턴값(attack 이미지)을 받아옴
- */
+*/
 interface Reqapi{
     @Multipart
     @POST("post/")
@@ -16,7 +16,7 @@ interface Reqapi{
 
 /* # CrobReqapi #
    http://SERVER_URL/crob로 이미지와 x, y, w, h를 전송후 리턴값(attack 이미지)을 받아옴
- */
+*/
 interface CrobReqapi{
     @Multipart
     @POST("crop/")
@@ -25,8 +25,9 @@ interface CrobReqapi{
 
 /* # ReqPreviewapi #
    http://SERVER_URL/preview로 noise값(int)을 전송후 리턴값(preview 이미지)을 받아옴
- */
+*/
 interface ReqPreviewapi{
-    @POST("preview/")
-    fun getImage(@Query("noise") noise:Int): Call<ResponseBody>
+    @Multipart
+    @POST("detect/")
+    fun getImage(@Part Image: MultipartBody.Part): Call<ResponseBody>
 }

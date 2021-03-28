@@ -69,9 +69,13 @@ class MainFragment : Fragment() {
         lateinit var preView:ImageView
         lateinit var camera:Button
         lateinit var gallery:Button
-        lateinit var trans:Button
         lateinit var noise:SeekBar
         lateinit var previewTitle: TextView
+        lateinit var trans:Button
+        lateinit var boxPreview:Button
+        lateinit var temp: ImageView
+        lateinit var preViewt:ImageView
+        lateinit var preViewnt:ImageView
 
         lateinit var filePath:File
         lateinit var storePath:File
@@ -101,13 +105,15 @@ class MainFragment : Fragment() {
         camera = view!!.findViewById(R.id.camera_btn)
         gallery = view!!.findViewById(R.id.gallery_btn)
         trans = view!!.findViewById(R.id.trans)
+        boxPreview = view!!.findViewById(R.id.boxpreview)
         noise = view!!.findViewById(R.id.noisePercent)
         previewTitle = view!!.findViewById(R.id.previewTitle)
+        temp = view!!.findViewById(R.id.tempSaveImage)
+        preViewt = view!!.findViewById(R.id.previewTrans)
+        preViewnt= view!!.findViewById(R.id.previewnotTrans)
         packageManager = this.context!!.packageManager
 
         storePath = this.context!!.getExternalFilesDir(Environment.DIRECTORY_DCIM)!!
-
-        preView.setImageBitmap(viewModel.Req_preview(noise.progress))
 
         noise.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -117,6 +123,9 @@ class MainFragment : Fragment() {
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 previewTitle.text = "노이즈 변경중..."
+                preView.visibility = View.VISIBLE
+                preViewt.visibility = View.INVISIBLE
+                preViewnt.visibility = View.INVISIBLE
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
@@ -132,17 +141,25 @@ class MainFragment : Fragment() {
         })
 
         camera.setOnClickListener {
-            trans.text = "변환"
             Log.d(TAG + "_Camera", "Start")
             dispatchTakePictureIntent()
             Log.d(TAG + "_Camera", "End")
-        }
-        gallery.setOnClickListener {
             trans.text = "변환"
+            trans.visibility = View.VISIBLE
+            boxPreview.visibility = View.VISIBLE
+            boxPreview.text = "얼굴 찾기"
+        }
+
+        gallery.setOnClickListener {
             Log.d(TAG + "_Gallery", "Start")
             openGalleryForImage()
             Log.d(TAG + "_Gallery", "End")
+            trans.text = "변환"
+            trans.visibility = View.VISIBLE
+            boxPreview.visibility = View.VISIBLE
+            boxPreview.text = "얼굴 찾기"
         }
+
         trans.setOnClickListener {
             Log.d(TAG + "_Crop", "Start")
             if (targetImage.drawable == null) {
@@ -151,13 +168,37 @@ class MainFragment : Fragment() {
                     this.activity!!.applicationContext,
                     "No Image",
                     Toast.LENGTH_SHORT
-                )
-                    .show()
+                ).show()
+
             } else {
                 trans.text = "처리중 ..."
                 CropImage.activity(fileUri).start(context!!, this)
             }
             Log.d(TAG + "_Crop", "End")
+            boxPreview.text = "성능 확인"
+        }
+
+        boxPreview.setOnClickListener {
+            Log.d(TAG + "_boxPreview", "Start")
+            val isOri = temp.drawable == null
+            preView.visibility = View.INVISIBLE
+            if (preViewnt.drawable != null && preViewt.drawable != null){
+                preViewnt.visibility = View.VISIBLE
+                preViewt.visibility = View.VISIBLE
+            }else {
+                if (isOri) {
+                    Log.d(TAG + "_boxPreview", "not trans")
+                    val inputImage = targetImage.drawable.toBitmap()
+                    viewModel.Req_BoxPreview(inputImage, storePath, isOri)
+                    preViewnt.visibility = View.VISIBLE
+                } else {
+                    Log.d(TAG + "_boxPreview", "trans")
+                    val inputImage = temp.drawable.toBitmap()
+                    viewModel.Req_BoxPreview(inputImage, storePath, isOri)
+                    preViewt.visibility = View.VISIBLE
+                }
+            }
+            Log.d(TAG + "_boxPreview", "End")
         }
     }
 
@@ -221,6 +262,7 @@ class MainFragment : Fragment() {
                         Toast.LENGTH_SHORT
                 ).show()
 
+                // Crob 안하는 버전 현재 사용 X
                 if (isCrob == 0){
                     if (viewModel.Send_Image(targetImage, storePath)) {
                         viewModel.Show_Save_Toast.observe(this, {
