@@ -1,5 +1,14 @@
 # DeepfakeBlock
 
+## Contents
+
+1. 프로젝트 개요
+2. 사용 기법 및 프레임워크 소개
+3. 사용 주요 개념
+4. 프로젝트 목표
+5. 참고 자료
+6. API 가이드
+
 ## 프로젝트 개요
 
 머신러닝 기술이 발전함에 따라 수 많은 이점도 있지만, 그에 못지 않은 악용 사례들도 늘어나고 있다. 그 중 가장 대표적인 사례중 하나가 무분별하게 만들어지는 딥페이크 영상이다. 머신러닝 오픈소스 들이 널리 보편화 되면서 머신러닝에 지식이 많지 않은 사람들도 쉽게 딥페이크 영상을 만들 수 있는데 이를 막을 뚜렷한 방법은 아직 개발되지 않고 있다. 
@@ -8,7 +17,9 @@
 ## 사용 기법 및 프레임워크 소개
 
 tensorflow
+
 resnet
+
 adversarial attack
 
 Android: kotlin
@@ -36,3 +47,8 @@ Android: kotlin
 - Amin Ghiasi, Ali Shafahi, Tom Goldstein (2019) BREAKING CERTIFIED DEFENSES: SEMANTIC ADVERSARIAL EXAMPLES WITH SPOOFED ROBUSTNESS CERTIFICATES (https://openreview.net/pdf?id=HJxdTxHYvB)
 
 - Derui Wang; Chaoran Li; Sheng Wen; Qing-Long Han; Surya Nepal; Xiangyu Zhang; Yang Xiang (2021) Daedalus: Breaking Nonmaximum Suppression in Object Detection via Adversarial Examples (https://ieeexplore.ieee.org/abstract/document/9313033)
+
+## API Gruide
+
+[API Guide](./API Guide.md)는 해당 문서를 참고
+
