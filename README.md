@@ -50,5 +50,5 @@ Android: kotlin
 
 ## API Gruide
 
-[API Guide](./API Guide.md)는 해당 문서를 참고
+[API Guide](./API Guide.md) 는 해당 문서를 참고
 
