@@ -23,6 +23,10 @@
 
 
 
+
+
+![title](README.assets/1Eb4lgp_iPBFkS2ubQuOanpivenoOL8rYqdJ15wQ6Jd8X1Tk9Qd1zm8EZ21CChhlK8csuXdRZYptJbhglMKgbFgkkdJfLo-JGVkPcX2KRtFpDqqZg6blL-6Bhn7KlQvl){: width="50%" height="50%"}
+
 영상을 보호하기 전과 후의 딥페이크 영상의 결과
 
 
@@ -74,6 +78,7 @@ https://play.google.com/store/apps/details?id=com.KGT_AI_2.Cheonlian
 
 - Xingxing Wei, Siyuan Liang, Ning Chen, Xiaochun Cao (2019) Transferable Adversarial Attacks for Image and Video Object Detection (https://arxiv.org/abs/1811.12641)
 - Amin Ghiasi, Ali Shafahi, Tom Goldstein (2019) BREAKING CERTIFIED DEFENSES: SEMANTIC ADVERSARIAL EXAMPLES WITH SPOOFED ROBUSTNESS CERTIFICATES (https://openreview.net/pdf?id=HJxdTxHYvB)
+- Ka-Ho Chow, Ling Liu, Mehmet Emre Gursoy, Stacey Truex, Wenqi Wei, Yanzhao Wu (2020) TOG: Targeted Adversarial Objectness Gradient Attacks on Real-time Object Detection Systems (https://arxiv.org/abs/2004.04320)
 - https://github.com/git-disl/TOG
 - https://github.com/deepfakes/faceswap
 
