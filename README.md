@@ -1,4 +1,4 @@
-![Generic badge](https://img.shields.io/badge/tensorflow-1.8-red.svg)![Generic badge](https://img.shields.io/badge/python-3.6-green.svg)![Generic badge](https://img.shields.io/badge/os-linux-blue.svg)![Generic badge](https://img.shields.io/badge/cuda-10.0-silver.svg)
+![Generic badge](https://img.shields.io/badge/tensorflow-1.8-red.svg)![Generic badge](https://img.shields.io/badge/python-3.6-green.svg)![Generic badge](https://img.shields.io/badge/os-linux-blue.svg)![Generic badge](https://img.shields.io/badge/cuda-10.0-silver.svg)![Generic badge](https://img.shields.io/badge/DeepfakeBlock-1.0v(closed)-silver.svg)
 
 
 
@@ -58,18 +58,22 @@ API Guide는 [해당 문서](./API_Guide.md)를 참고
 
 http://18.221.61.105:8000 (현재 서비스 종료)
 
-
+![img](README.assets/9lh4-vWRKnOJ1mSyR-S-3YEQYAasMZ_YSOLDJl0Nd9u0CLB8Dit1hwAiYU-i3xjIW4FwOoJh50kz6i6_Jxv7Agm-nqmVBQF8yB6EnBeb3G97MtWywxvq_rsV8f5xI_xj)
 
 ### App Guide
 
-(링크 추가 예정)
+https://play.google.com/store/apps/details?id=com.KGT_AI_2.Cheonlian
+
+![img](README.assets/quGWemHwMSdlNRuAhasM1ffhMYwDTBIt_ExvYj0KWzVFxB-PR__YOXN0yM-HmrSiQM38u-COX9dk6DLVCFMffeSwJy97isDzjjv_-cCIjQhveTT6cdLGeFmPjhidlweA)
+
+
 
 
 
 ## 참고 자료
 
 - Xingxing Wei, Siyuan Liang, Ning Chen, Xiaochun Cao (2019) Transferable Adversarial Attacks for Image and Video Object Detection (https://arxiv.org/abs/1811.12641)
-
 - Amin Ghiasi, Ali Shafahi, Tom Goldstein (2019) BREAKING CERTIFIED DEFENSES: SEMANTIC ADVERSARIAL EXAMPLES WITH SPOOFED ROBUSTNESS CERTIFICATES (https://openreview.net/pdf?id=HJxdTxHYvB)
+- https://github.com/git-disl/TOG
+- https://github.com/deepfakes/faceswap
 
-- Derui Wang; Chaoran Li; Sheng Wen; Qing-Long Han; Surya Nepal; Xiangyu Zhang; Yang Xiang (2021) Daedalus: Breaking Nonmaximum Suppression in Object Detection via Adversarial Examples (https://ieeexplore.ieee.org/abstract/document/9313033)
