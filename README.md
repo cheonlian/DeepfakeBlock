@@ -56,9 +56,13 @@ API Guide는 [해당 문서](./API_Guide.md)를 참고
 
 ### Web Guide
 
+http://18.221.61.105:8000 (현재 서비스 종료)
+
 
 
 ### App Guide
+
+(링크 추가 예정)
 
 
 
