@@ -25,10 +25,6 @@
 
 
 
-
-
-![title](README.assets/1Eb4lgp_iPBFkS2ubQuOanpivenoOL8rYqdJ15wQ6Jd8X1Tk9Qd1zm8EZ21CChhlK8csuXdRZYptJbhglMKgbFgkkdJfLo-JGVkPcX2KRtFpDqqZg6blL-6Bhn7KlQvl){: width="50%" height="50%"}
-
 영상을 보호하기 전과 후의 딥페이크 영상의 결과
 
 
