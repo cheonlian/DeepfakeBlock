@@ -1,4 +1,4 @@
-![Generic badge](https://img.shields.io/badge/tensorflow-1.8-red.svg)![Generic badge](https://img.shields.io/badge/python-3.6-green.svg)![Generic badge](https://img.shields.io/badge/os-linux-blue.svg)![Generic badge](https://img.shields.io/badge/cuda-10.0-silver.svg)![Generic badge](https://img.shields.io/badge/DeepfakeBlock-1.0v(closed)-silver.svg)
+![Generic badge](https://img.shields.io/badge/tensorflow-1.8-red.svg) ![Generic badge](https://img.shields.io/badge/python-3.6-green.svg) ![Generic badge](https://img.shields.io/badge/os-linux-blue.svg) ![Generic badge](https://img.shields.io/badge/cuda-10.0-silver.svg) ![Generic badge](https://img.shields.io/badge/DeepfakeBlock-1.0v(closed)-silver.svg)
 
 
 
