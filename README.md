@@ -1,4 +1,4 @@
-![Generic badge](https://img.shields.io/badge/tensorflow-1.8-red.svg)![Generic badge](https://img.shields.io/badge/resNet-1.8-green.svg)![Generic badge](https://img.shields.io/badge/adversarial attack-1.8-blue.svg)![Generic badge](https://img.shields.io/badge/android-kotlin-silver.svg)
+![Generic badge](https://img.shields.io/badge/tensorflow-1.8-red.svg)![Generic badge](https://img.shields.io/badge/python-3.6-green.svg)![Generic badge](https://img.shields.io/badge/os-linux-blue.svg)![Generic badge](https://img.shields.io/badge/cuda-10.0-silver.svg)
 
 
 
@@ -19,11 +19,11 @@
 
 
 
-어택 전 딥페이크 / 어택 후 딥페이크
-
-Deepfake 기술이 악용되는 사례가 늘어간다. Open source로 인해 비전문가도 쉽게 가짜 영상을 만들 수 있어서 악용의 접근성도 높아지고 있다. 
+<img src="README.assets/1Eb4lgp_iPBFkS2ubQuOanpivenoOL8rYqdJ15wQ6Jd8X1Tk9Qd1zm8EZ21CChhlK8csuXdRZYptJbhglMKgbFgkkdJfLo-JGVkPcX2KRtFpDqqZg6blL-6Bhn7KlQvl" alt="img" style="zoom:60%;" /><img src="README.assets/zL5lSuDuNkxb6SCe6xCzvN8_aGoi9GnLEdtPrlNqBN0ASz7MpcY8bdw0nQKQGyYZdXWgnBKdVDv9CLJPBMgp8P5ePVV-Ynr3VLyMy0ERLtmZQfTMYNqf4-0QiCfebiFk" alt="img" style="zoom:60%;" />
 
 
+
+영상을 보호하기 전과 후의 딥페이크 영상의 결과
 
 
 
