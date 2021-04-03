@@ -3,11 +3,12 @@ import numpy as np
 
 
 def visualize_detections(detections_dict):
+    fileName = ""
     colors = plt.cm.hsv(np.linspace(0, 1, 21)).tolist()
     plt.clf()
     plt.figure(figsize=(3 * len(detections_dict), 3))
     for pid, title in enumerate(detections_dict.keys()):
-        input_img, detections, model_img_size, classes = detections_dict[title]
+        fileName, input_img, detections, model_img_size, classes = detections_dict[title]
         if len(input_img.shape) == 4:
             input_img = input_img[0]
         plt.subplot(1, len(detections_dict), pid + 1)
@@ -25,4 +26,6 @@ def visualize_detections(detections_dict):
                 plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin, color=color, fill=False, linewidth=2))
             #current_axis.text(xmin, ymin, label, size='small', color='black', bbox={'facecolor': color, 'alpha': 1.0})
         plt.axis('off')
+    # 결과 저장 추가
+    plt.savefig(f'./image/{fileName}')
     plt.show()

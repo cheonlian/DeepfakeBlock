@@ -7,8 +7,11 @@ api/.vscode/
 
 api/tog/model_weights/
 api/tog/image/
-model.ipynb
-test.ipynb
+api/yolov3/yolov3_face.weights
+api/image/
+api/video/
+
+*.ipynb
 
 ### Docker ###
 Dockerfile
