@@ -16,9 +16,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
 import com.AI.kgt_test_app.R
@@ -67,10 +65,17 @@ class MainFragment : Fragment() {
 
         lateinit var packageManager:PackageManager
 
-        lateinit var imageView:ImageView
+        lateinit var targetImage:ImageView
+        lateinit var preView:ImageView
         lateinit var camera:Button
         lateinit var gallery:Button
+        lateinit var noise:SeekBar
+        lateinit var previewTitle: TextView
         lateinit var trans:Button
+        lateinit var boxPreview:Button
+        lateinit var temp: ImageView
+        lateinit var preViewt:ImageView
+        lateinit var preViewnt:ImageView
 
         lateinit var filePath:File
         lateinit var storePath:File
@@ -95,42 +100,105 @@ class MainFragment : Fragment() {
         viewModel = ViewModelProvider(viewModelStore, MainViewModelFactory(this.activity!!.application)).get(
             MainViewModel::class.java)
 
-        imageView = view!!.findViewById(R.id.imageView)
+        targetImage = view!!.findViewById(R.id.targetImageView)
+        preView = view!!.findViewById(R.id.preview)
         camera = view!!.findViewById(R.id.camera_btn)
         gallery = view!!.findViewById(R.id.gallery_btn)
         trans = view!!.findViewById(R.id.trans)
+        boxPreview = view!!.findViewById(R.id.boxpreview)
+        noise = view!!.findViewById(R.id.noisePercent)
+        previewTitle = view!!.findViewById(R.id.previewTitle)
+        temp = view!!.findViewById(R.id.tempSaveImage)
+        preViewt = view!!.findViewById(R.id.previewTrans)
+        preViewnt= view!!.findViewById(R.id.previewnotTrans)
         packageManager = this.context!!.packageManager
 
         storePath = this.context!!.getExternalFilesDir(Environment.DIRECTORY_DCIM)!!
 
+        noise.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                // noisebar가 변경 되면 preview 요청
+                // preView.setImageBitmap(viewModel.Req_preview(noise.progress))
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                previewTitle.text = "노이즈 변경중..."
+                preView.visibility = View.VISIBLE
+                preViewt.visibility = View.INVISIBLE
+                preViewnt.visibility = View.INVISIBLE
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                previewTitle.text = "노이즈 " + noise.progress.toString()
+                when(noise.progress){
+                    1 -> preView.setImageResource(R.drawable.noise1)
+                    2 -> preView.setImageResource(R.drawable.noise2)
+                    3 -> preView.setImageResource(R.drawable.noise3)
+                    4 -> preView.setImageResource(R.drawable.noise4)
+                    5 -> preView.setImageResource(R.drawable.noise5)
+                }
+            }
+        })
 
         camera.setOnClickListener {
-            trans.text = "변환"
             Log.d(TAG + "_Camera", "Start")
             dispatchTakePictureIntent()
             Log.d(TAG + "_Camera", "End")
-        }
-        gallery.setOnClickListener {
             trans.text = "변환"
+            trans.visibility = View.VISIBLE
+            boxPreview.visibility = View.VISIBLE
+            boxPreview.text = "얼굴 찾기"
+        }
+
+        gallery.setOnClickListener {
             Log.d(TAG + "_Gallery", "Start")
             openGalleryForImage()
             Log.d(TAG + "_Gallery", "End")
+            trans.text = "변환"
+            trans.visibility = View.VISIBLE
+            boxPreview.visibility = View.VISIBLE
+            boxPreview.text = "얼굴 찾기"
         }
+
         trans.setOnClickListener {
             Log.d(TAG + "_Crop", "Start")
-            if (imageView.drawable == null) {
-                Log.e(TAG, imageView.toString())
+            if (targetImage.drawable == null) {
+                Log.e(TAG, targetImage.toString())
                 Toast.makeText(
                     this.activity!!.applicationContext,
                     "No Image",
                     Toast.LENGTH_SHORT
-                )
-                    .show()
+                ).show()
+
             } else {
                 trans.text = "처리중 ..."
                 CropImage.activity(fileUri).start(context!!, this)
             }
             Log.d(TAG + "_Crop", "End")
+            boxPreview.text = "성능 확인"
+        }
+
+        boxPreview.setOnClickListener {
+            Log.d(TAG + "_boxPreview", "Start")
+            val isOri = temp.drawable == null
+            preView.visibility = View.INVISIBLE
+            if (preViewnt.drawable != null && preViewt.drawable != null){
+                preViewnt.visibility = View.VISIBLE
+                preViewt.visibility = View.VISIBLE
+            }else {
+                if (isOri) {
+                    Log.d(TAG + "_boxPreview", "not trans")
+                    val inputImage = targetImage.drawable.toBitmap()
+                    viewModel.Req_BoxPreview(inputImage, storePath, isOri)
+                    preViewnt.visibility = View.VISIBLE
+                } else {
+                    Log.d(TAG + "_boxPreview", "trans")
+                    val inputImage = temp.drawable.toBitmap()
+                    viewModel.Req_BoxPreview(inputImage, storePath, isOri)
+                    preViewt.visibility = View.VISIBLE
+                }
+            }
+            Log.d(TAG + "_boxPreview", "End")
         }
     }
 
@@ -163,12 +231,12 @@ class MainFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && filePath.isFile) {
             val bitmap = getImage()
-            imageView.setImageBitmap(bitmap)
+            targetImage.setImageBitmap(bitmap)
         }else if (requestCode == REQUEST_GALLERY_TAKE && resultCode == RESULT_OK){
             val bitmap = data?.data
             fileUri = bitmap!!
             currentPhotoPath = bitmap!!.path
-            imageView.setImageURI(bitmap) // handle chosen image
+            targetImage.setImageURI(bitmap) // handle chosen image
         }else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
             Log.d(TAG + "_Crop Result", "Start")
             val result = CropImage.getActivityResult(data)
@@ -185,7 +253,7 @@ class MainFragment : Fragment() {
                 val h = (xy[3] - xy[1]).toFloat()
 
                 val xywh = listOf(x, y, w, h)
-                val targetImage = imageView.drawable.toBitmap()
+                val targetImage = targetImage.drawable.toBitmap()
 
                 Log.d(TAG + "_TRANS", "Photo path: ${currentPhotoPath}")
                 Toast.makeText(
@@ -194,6 +262,7 @@ class MainFragment : Fragment() {
                         Toast.LENGTH_SHORT
                 ).show()
 
+                // Crob 안하는 버전 현재 사용 X
                 if (isCrob == 0){
                     if (viewModel.Send_Image(targetImage, storePath)) {
                         viewModel.Show_Save_Toast.observe(this, {
@@ -219,7 +288,7 @@ class MainFragment : Fragment() {
                         })
                     }
                 }else if(isCrob == 1) {
-                    if (viewModel.Crop_Send_Image(targetImage, storePath, xywh)) {
+                    if (viewModel.Crop_Send_Image(targetImage, storePath, xywh, noise.progress)) {
                         viewModel.Show_Save_Toast.observe(this, {
                             it.getContentIfNotHandled()?.let {
                                 Toast.makeText(

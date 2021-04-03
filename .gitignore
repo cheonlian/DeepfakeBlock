@@ -6,6 +6,16 @@
 api/.vscode/
 
 api/tog/model_weights/
+api/tog/image/
+api/yolov3/yolov3_face.weights
+api/image/
+api/video/
+
+*.ipynb
+
+### Docker ###
+Dockerfile
+dockerignore
 
 ### Django ###
 

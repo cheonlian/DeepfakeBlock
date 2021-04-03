@@ -1,70 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.MainFragment">
-
-    <TextView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/vision"
-        android:layout_marginTop="10pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:context=".ui.main.MainFragment">
 
-    <Button
-        android:id="@+id/camera_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn1"
-        android:layout_marginEnd="50pt"
-        android:layout_marginTop="50pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Title"
+            android:layout_marginTop="10pt"
+            android:textSize="11pt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/gallery_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn2"
-        android:layout_marginStart="50pt"
-        android:layout_marginTop="50pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/previewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vision"
+            android:textSize="8pt"
+            android:layout_marginTop="3pt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+        <ImageView
+            android:id="@+id/preview"
+            android:layout_width="100pt"
+            android:layout_height="75pt"
+            android:layout_marginTop="5pt"
+            app:layout_constraintStart_toStartOf="@id/previewTitle"
+            app:layout_constraintEnd_toEndOf="@id/previewTitle"
+            app:layout_constraintTop_toBottomOf="@id/previewTitle"
+            />
+
+        <ImageView
+            android:id="@+id/previewnotTrans"
+            android:layout_width="75pt"
+            android:layout_height="75pt"
+            android:layout_marginTop="5pt"
+            android:layout_marginStart="5pt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/previewTitle"
+            />
+
+        <ImageView
+            android:id="@+id/previewTrans"
+            android:layout_width="75pt"
+            android:layout_height="75pt"
+            android:layout_marginTop="5pt"
+            android:layout_marginEnd="5pt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/previewTitle"
+            />
+
+        <TextView
+            android:id="@+id/seekbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/seekbarTitle"
+            android:layout_marginTop="2pt"
+            android:textSize="8pt"
+            app:layout_constraintLeft_toLeftOf="@id/noisePercent"
+            app:layout_constraintRight_toRightOf="@id/noisePercent"
+            app:layout_constraintTop_toBottomOf="@id/preview"
+            />
+        <SeekBar
+            android:id="@+id/noisePercent"
+            android:layout_width="75pt"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/seekbarTitle"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintLeft_toLeftOf="@id/preview"
+            app:layout_constraintRight_toRightOf="@id/preview"
+            android:min="1"
+            android:max="5"
+            android:progress="3"/>
+
+        <Button
+            android:id="@+id/camera_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn1"
+            android:layout_marginEnd="50pt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/noisePercent"
+            />
+
+        <Button
+            android:id="@+id/gallery_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn2"
+            android:layout_marginLeft="50pt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/noisePercent"
+            />
 
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/camera_btn"
-        />
+        <ImageView
+            android:id="@+id/targetImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/camera_btn"
+            />
 
-    <com.theartofdev.edmodo.cropper.CropImageView
-        android:id="@+id/cropImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        tools:ignore="MissingConstraints"
-        />
-
-    <Button
-        android:id="@+id/trans"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn3"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/message"
-        app:layout_constraintEnd_toEndOf="@+id/message"/>
+        <Button
+            android:id="@+id/trans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn3"
+            app:layout_constraintTop_toBottomOf="@+id/targetImageView"
+            app:layout_constraintStart_toStartOf="@+id/camera_btn"
+            app:layout_constraintEnd_toEndOf="@+id/camera_btn"
+            android:visibility="invisible"
+            />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/boxpreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="얼굴 찾기"
+            app:layout_constraintTop_toBottomOf="@+id/targetImageView"
+            app:layout_constraintStart_toStartOf="@+id/gallery_btn"
+            app:layout_constraintEnd_toEndOf="@+id/gallery_btn"
+            android:visibility="invisible"
+            />
+
+        <ImageView
+            android:id="@+id/tempSaveImage"
+            android:layout_width="100pt"
+            android:layout_height="75pt"
+            android:layout_marginTop="5pt"
+            app:layout_constraintStart_toStartOf="@id/targetImageView"
+            app:layout_constraintEnd_toEndOf="@id/targetImageView"
+            app:layout_constraintTop_toBottomOf="@id/targetImageView"
+            android:visibility="invisible"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
